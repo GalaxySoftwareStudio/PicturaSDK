@@ -1,10 +1,13 @@
 # # # Pictura SDK gitignore
+*.exe
+!Vendor/premake
 !premake.exe
 !premake
 !premake_osx
 .vs/*
 *.sln
 *.vcxproj
+*.vcxproj.*
 *.xcworkspace/*
 *.xcodeproj/*
 *.pbxproj
@@ -126,6 +129,5 @@ DerivedData/
 *.lib
 
 # Executables
-*.exe
 *.out
 *.app
