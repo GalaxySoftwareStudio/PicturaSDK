@@ -12,4 +12,4 @@ else
     ./Vendor/premake/premake --verbose --file=./generate-sdk.lua gmake2
 fi
 
-sleep 3 &> /dev/null
+sleep 1 &> /dev/null
