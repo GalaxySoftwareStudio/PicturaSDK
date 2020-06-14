@@ -12,6 +12,11 @@ if (os.target() == "bsd") then outputDirName = "BSD" end
 
 print("Generating Pictura SDK project files...")
 
+print("Creating framework output directory...")
+os.mkdir("./Framework")
+print("Creating intermediate directory...")
+os.mkdir("./Intermediate")
+
 filter "system:windows"
 	system "Windows"
 	platforms {"Win64"}
@@ -27,6 +32,7 @@ filter "system:macosx"
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
 
+-- Pictura SDK project --
 project "PicturaFramework"
 	location "Sources"
 	kind "StaticLib"
@@ -38,12 +44,7 @@ project "PicturaFramework"
 	targetname ("Pictura-%{cfg.buildcfg}")
 	print("Target system : " .. outputDirName);
 	targetdir ("Framework/" .. outputDirName .. "/")
-	objdir ("Intermediate/" .. outputDirName .. "/")
-
-	print("Creating framework output directory...")
-	os.mkdir("./Framework")
-	print("Creating intermediate directory...")
-	os.mkdir("./Intermediate")
+	objdir ("Intermediate/%{prj.name}/" .. outputDirName .. "/")
 
 	pchheader "PicturaPCH.h"
 	pchsource "Sources/PicturaPCH.cpp"
@@ -68,6 +69,57 @@ project "PicturaFramework"
 		system "Windows"
 		platforms {"Win64"}
 
+
+	filter "system:linux"
+		system "Linux"
+		platforms {"Linux"}
+		
+	filter "system:macosx"
+		system "macosx"
+		platforms {"MacOS"}
+
+	filter "configurations:Debug"
+		defines "PICTURA_DEBUG"
+		runtime "Debug"
+		symbols "on"
+
+	filter "configurations:Release"
+		defines "PICTURA_RELEASE"
+		runtime "Release"
+		optimize "on"
+
+-- Pictura Demo project --
+project "PicturaDemo"
+	location "Examples/%{prj.name}"
+	kind "ConsoleApp"
+	language "C++"
+	cppdialect "C++17"
+	staticruntime "on"
+	systemversion "latest"
+
+	targetname ("%{prj.name}-%{cfg.buildcfg}")
+	targetdir ("Examples/" .. outputDirName .. "/")
+	objdir ("Intermediate/%{prj.name}/" .. outputDirName .. "/")
+
+	files
+	{
+		"./Examples/%{prj.name}/Sources/**.h",
+		"./Examples/%{prj.name}/Sources/**.cpp",
+	}
+
+	includedirs
+	{
+		"./Sources"
+	}
+
+	links
+	{
+		"PicturaFramework"
+	}
+
+	filter "system:windows"
+		system "Windows"
+		platforms {"Win64"}
 
 	filter "system:linux"
 		system "Linux"
