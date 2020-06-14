@@ -1,6 +1,5 @@
 @echo off
 echo --- CLEANING UP SDK PROJECT ---
-echo Ignore the error messages...
 echo.
 pushd %~dp0\
 rmdir /Q /S .\Framework

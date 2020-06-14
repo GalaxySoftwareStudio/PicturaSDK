@@ -10,7 +10,19 @@ if (os.target() == "macosx") then outputDirName = "MacOS" end
 if (os.target() == "unix") then outputDirName = "Linux" end
 if (os.target() == "bsd") then outputDirName = "BSD" end
 
-print("Generating Pictura SDK Solution Files...")
+print("Generating Pictura SDK project files...")
+
+filter "system:windows"
+	system "Windows"
+	platforms {"Win64"}
+
+filter "system:linux"
+	system "Linux"
+	platforms {"Linux"}
+
+filter "system:macosx"
+	system "macosx"
+	platforms {"MacOS"}
 
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
@@ -52,18 +64,18 @@ project "PicturaFramework"
 		"./Sources"
 	}
 
-	filter "system:Windows"
+	filter "system:windows"
+		system "Windows"
 		platforms {"Win64"}
-		system "windows"
 
 
-	filter "system:Unix"
+	filter "system:linux"
+		system "Linux"
 		platforms {"Linux"}
-		system "linux"
 		
-	filter "system:Mac"
-		platforms {"MacOS"}
+	filter "system:macosx"
 		system "macosx"
+		platforms {"MacOS"}
 
 	filter "configurations:Debug"
 		defines "PICTURA_DEBUG"
