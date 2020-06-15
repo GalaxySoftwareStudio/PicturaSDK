@@ -90,7 +90,7 @@ project "PicturaFramework"
 
 -- Pictura Demo project --
 project "PicturaDemo"
-	location "Examples/%{prj.name}"
+	location "Examples/%{prj.name}/Sources"
 	kind "ConsoleApp"
 	language "C++"
 	cppdialect "C++17"
@@ -98,8 +98,8 @@ project "PicturaDemo"
 	systemversion "latest"
 
 	targetname ("%{prj.name}-%{cfg.buildcfg}")
-	targetdir ("Examples/" .. outputDirName .. "/")
-	objdir ("Intermediate/%{prj.name}/" .. outputDirName .. "/")
+	targetdir ("Examples/%{prj.name}/Build/" .. outputDirName .. "/")
+	objdir ("Examples/%{prj.name}/Intermediate/" .. outputDirName .. "/")
 
 	files
 	{

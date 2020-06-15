@@ -13,8 +13,8 @@
 *.pbxproj
 
 # Build results
-Framework/*
-Intermediate/*
+**/Framework/*
+**/Intermediate/*
 
 
 # # # Visual Studio gitignore
