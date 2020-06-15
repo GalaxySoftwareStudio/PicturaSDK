@@ -1,1 +1,0 @@
-#include "Pictura.h"
