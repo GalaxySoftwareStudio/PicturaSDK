@@ -7,7 +7,8 @@ workspace "PicturaSDK"
 
 if (os.target() == "windows") then outputDirName = "Windows" end
 if (os.target() == "macosx") then outputDirName = "MacOS" end
-if (os.target() == "unix") then outputDirName = "Linux" end
+if (os.target() == "unix") then outputDirName = "Unix" end
+if (os.target() == "linux") then outputDirName = "Linux" end
 if (os.target() == "bsd") then outputDirName = "BSD" end
 
 print("Generating Pictura SDK project files...")
