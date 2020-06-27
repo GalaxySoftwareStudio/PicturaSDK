@@ -1,17 +1,31 @@
+#include "FrameworkLoader.h"
 #include "PicturaDemo.h"
-#include <stdlib.h>
-#include <crtdbg.h> 
 
-int main()
+class DemoApplication : public Application
 {
-	Log::GetFrameworkLog().Info("Application is running !");
-	Log::GetFrameworkLog().Debug("Something happened...");
-	Log::GetFrameworkLog().Warning("Tried to parse an invalid data !");
-	Log::GetFrameworkLog().Error("Connection failed !");
-	Log::GetFrameworkLog().Fatal("FSException: File not found!");
+public:
+	DemoApplication()
+	{
+		ApplicationStart += EventHandler::Bind(&DemoApplication::DemoApplication_ApplicationStart, this);
+		ApplicationClose += EventHandler::Bind(&DemoApplication::DemoApplication_ApplicationClose, this);
+	}
 
-	UniquePtr<Log> AppLog = Log::CreateLog("Application");
+	void DemoApplication_ApplicationStart(StartupEventArgs& e)
+	{
+		GetApplicationLog().Info("Application is running !");
+		GetApplicationLog().Debug("Something happened...");
+		GetApplicationLog().Warning("Tried to parse an invalid data !");
+		GetApplicationLog().Error("Connection failed !");
+		GetApplicationLog().Fatal("FSException: File not found!");
 
-	AppLog->Debug("Oui");
-	Console::Pause();
-}
+		Console::Pause();
+
+		Exit();
+	}
+
+	void DemoApplication_ApplicationClose(EventArgs& e)
+	{
+		GetApplicationLog().Info("Application closed!");
+	}
+};
+APPLICATION(DemoApplication)
