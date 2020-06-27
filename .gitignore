@@ -11,10 +11,12 @@
 *.xcworkspace/*
 *.xcodeproj/*
 *.pbxproj
+Makefile
 
 # Build results
 **/Framework/*
 **/Intermediate/*
+**/Build/**
 
 
 # # # Visual Studio gitignore

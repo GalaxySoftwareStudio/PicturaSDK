@@ -6,6 +6,9 @@
 #ifdef _WIN32
     #ifdef _WIN64
         #define PLATFORM_WINDOWS
+        #ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
+            #define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
+        #endif
     #else
         #error "x86 Builds are not supported by Pictura!"
 #endif
