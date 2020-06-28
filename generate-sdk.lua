@@ -65,19 +65,23 @@ project "PicturaFramework"
 	{
 		"./Sources"
 	}
-
+	
 	filter "system:windows"
-		system "Windows"
-		platforms {"Win64"}
-
-
+	system "Windows"
+	platforms {"Win64"}
+	
+	
 	filter "system:linux"
 		system "Linux"
 		platforms {"Linux"}
+		links {"pthread"}
+		buildoptions { "-pthread", "-lpthread" }
 		
 	filter "system:macosx"
 		system "macosx"
 		platforms {"MacOS"}
+		links {"pthread"}
+		buildoptions { "-pthread", "-lpthread" }
 
 	filter "configurations:Debug"
 		defines "PICTURA_DEBUG"
@@ -125,10 +129,12 @@ project "PicturaDemo"
 	filter "system:linux"
 		system "Linux"
 		platforms {"Linux"}
+		links {"pthread"}
 		
 	filter "system:macosx"
 		system "macosx"
 		platforms {"MacOS"}
+		links {"pthread"}
 
 	filter "configurations:Debug"
 		defines "PICTURA_DEBUG"

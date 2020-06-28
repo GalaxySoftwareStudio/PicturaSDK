@@ -7,8 +7,8 @@ namespace Pictura::Threading
 	class Thread
 	{
 	public:
-		typedef void* ThreadHandle;
-
+		typedef NativeHandleType ThreadHandle;
+		
 		enum class ThreadPriority
 		{
 			Low = -2,
@@ -30,9 +30,8 @@ namespace Pictura::Threading
 				ThreadId = std::hash<std::thread::id>{}(threadObj->get_id());
 				ThreadName = "THREAD_" + Types::ToString(ThreadId);
 				Handle = threadObj->native_handle();
-				threadObj->detach();
-
 				ThreadStack.push_back(Types::MakeTuple(ThreadId, this));
+				threadObj->detach();
 
 				Debug::Log::GetFrameworkLog().Debug("Creating thread [" + ThreadName + "]");
 			}
@@ -49,9 +48,8 @@ namespace Pictura::Threading
 				ThreadId = std::hash<std::thread::id>{}(threadObj->get_id());
 				ThreadName = "THREAD_" + Types::ToString(ThreadId);
 				Handle = threadObj->native_handle();
-				threadObj->detach();
-
 				ThreadStack.push_back(Types::MakeTuple(ThreadId, this));
+				threadObj->detach();
 
 				Debug::Log::GetFrameworkLog().Debug("Creating thread [" + ThreadName + "]");
 			}
@@ -59,7 +57,7 @@ namespace Pictura::Threading
 
 		~Thread()
 		{
-			StopThread();
+			//StopThread();
 		}
 
 	public:

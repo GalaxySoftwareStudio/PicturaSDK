@@ -23,55 +23,56 @@ namespace Pictura
 		switch (Color)
 		{
 		case Pictura::Console::ConsoleColor::Black:
-			code = "/033[0;30;40m";
+			code = "\033[0;30m";
 			break;
 		case Pictura::Console::ConsoleColor::Grey:
-			code = "/033[0;37;40m";
+			code = "\033[0;37m";
 			break;
 		case Pictura::Console::ConsoleColor::White:
-			code = "/033[1;37;40m";
+			code = "\033[1;37m";
 			break;
 		case Pictura::Console::ConsoleColor::Red:
-			code = "/033[1;31;40m";
+			code = "\033[1;31m";
 			break;
 		case Pictura::Console::ConsoleColor::DarkRed:
-			code = "/033[0;31;40m";
+			code = "\033[0;31m";
 			break;
 		case Pictura::Console::ConsoleColor::Green:
-			code = "/033[1;32;40m";
+			code = "\033[1;32m";
 			break;
 		case Pictura::Console::ConsoleColor::DarkGreen:
-			code = "/033[0;32;40m";
+			code = "\033[0;32m";
 			break;
 		case Pictura::Console::ConsoleColor::Yellow:
-			code = "/033[1;33;40m";
+			code = "\033[1;33m";
 			break;
 		case Pictura::Console::ConsoleColor::DarkYellow:
-			code = "/033[0;33;40m";
+			code = "\033[0;33m";
 			break;
 		case Pictura::Console::ConsoleColor::Blue:
-			code = "/033[1;34;40m";
+			code = "\033[1;34m";
 			break;
 		case Pictura::Console::ConsoleColor::DarkBlue:
-			code = "/033[0;34;40m";
+			code = "\033[0;34m";
 			break;
 		case Pictura::Console::ConsoleColor::Magenta:
-			code = "/033[1;35;40m";
+			code = "\033[1;35m";
 			break;
 		case Pictura::Console::ConsoleColor::DarkMagenta:
-			code = "/033[0;35;40m";
+			code = "\033[0;35m";
 			break;
 		case Pictura::Console::ConsoleColor::Cyan:
-			code = "/033[1;36;40m";
+			code = "\033[1;36m";
 			break;
 		case Pictura::Console::ConsoleColor::DarkCyan:
-			code = "/033[0;36;40m";
+			code = "\033[0;36m";
 			break;
 		default:
-			code = "/033[1;37;40m";
+			code = "\033[1;37m";
 			break;
 		}
-		std::cout << code + Message + "/033[0m" << std::endl;
+
+		std::cout << code + Message + "\033[0;21m" << std::endl;
 #else   //Windows NT system code (Use Console API)
 		const auto hConsole = GetStdHandle(STD_OUTPUT_HANDLE);
 		const auto color = Types::ToUnderlying(Color);

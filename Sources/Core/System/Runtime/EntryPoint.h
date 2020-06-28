@@ -5,7 +5,7 @@
 #define APPLICATION(ClassName)\
 Pictura::Runtime::Application* Pictura::Runtime::InitApplication()\
 {\
-	return new ClassName##();\
+	return new ClassName();\
 }
 
 extern Pictura::Runtime::Application* Pictura::Runtime::InitApplication();
@@ -41,7 +41,7 @@ int main(int argc, char** argv)
 
 	app->Init(e); //Initialize the application thread
 
-	while (app->ApplicationThread) { } //Wait for the application execution to be complete
+	while (app->ApplicationThread.get()) { std::cout << ""; } //Wait for the application execution to be complete
 
 	delete app; //Free all application ressources
 }

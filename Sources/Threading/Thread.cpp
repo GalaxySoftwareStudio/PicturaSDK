@@ -16,20 +16,23 @@ namespace Pictura::Threading
 		#ifdef PLATFORM_WINDOWS
 			Sleep(milliseconds);
 		#else
-			nanosleep(milliseconds * 1000);
-		#endif	
+			struct timespec request = {0};
+			request.tv_nsec = milliseconds * 1000000L;
+			nanosleep(&request, (struct timespec *)NULL);
+		#endif
 	}
 
 	void Thread::StopThread()
 	{
 		if (threadObj != nullptr && isRunning)
 		{
-			threadObj = Types::MakeUnique<std::thread>([]() {});
-			isRunning = false;
 			if (threadObj->joinable())
 			{
+				Debug::Log::GetFrameworkLog().Debug("Joining thread [" + ThreadName + "]");
 				threadObj->join();
 			}
+			isRunning = false;
+			threadObj = Types::MakeUnique<std::thread>([]() {});
 			Debug::Log::GetFrameworkLog().Debug("Stopping thread [" + ThreadName + "]");
 
 			threadObj.reset();

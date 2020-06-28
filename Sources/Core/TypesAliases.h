@@ -3,6 +3,8 @@
 
 using String = std::string;
 
+using NativeHandleType = std::thread::native_handle_type;
+
 template <typename T>
 using Vector = std::vector<T>;
 

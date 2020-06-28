@@ -51,7 +51,7 @@ namespace Pictura::Runtime
 		static Application* CurrentApplication;
 
 	private:
-		UniquePtr<Debug::Log> m_ApplicationLog = Types::MakeUnique<Debug::Log>("Application");
+		SharedPtr<Debug::Log> m_ApplicationLog = Types::MakeShared<Debug::Log>("Application");
 		bool m_isQuitting = false;
 	};
 

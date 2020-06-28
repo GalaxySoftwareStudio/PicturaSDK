@@ -22,14 +22,14 @@ namespace Pictura::Debug
 	public:
 		static Log& GetFrameworkLog()
 		{
-			static UniquePtr<Log> inst = Types::MakeUnique<Log>("Framework");
+			static SharedPtr<Log> inst = Types::MakeUnique<Log>("Framework");
 			return *inst;
 		}
 
 		static void SetLogLevel(LogLevel NewLogLevel) { m_GlobalLogLevel = NewLogLevel; }
-		static UniquePtr<Log> CreateLog(String LogCategory)
+		static SharedPtr<Log> CreateLog(String LogCategory)
 		{
-			return Types::MakeUnique<Log>(LogCategory);
+			return Types::MakeShared<Log>(LogCategory);
 		}
 
 
