@@ -15,6 +15,9 @@
 #include "Core/Events/EventArgs/EventArgs.h"
 
 //Pictura::Threading
-#include "Threading/Thread.h"
+#include "Core/Threading/Thread.h"
+
+//Pictura::UI
+#include "UI/Window/Window.h"
 
 using namespace Pictura;

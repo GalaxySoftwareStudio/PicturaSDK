@@ -1,7 +1,7 @@
 #pragma once
 #include "Core/CoreFramework.h"
 #include "Core/System/Runtime/Runtime.h"
-#include "Threading/Thread.h"
+#include "Core/Threading/Thread.h"
 #include "Core/Events/Event.h"
 #include "Core/Events/EventArgs/EventArgs.h"
 
