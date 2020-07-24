@@ -1,6 +1,6 @@
 #pragma once
-#include "Core/CoreFramework.h"
-#include "Core/System/Debug/Log.h"
+#include "NTWindow.h"
+#include "X11Window.h"
 
 namespace Pictura::UI
 {
@@ -8,7 +8,15 @@ namespace Pictura::UI
 	{
 	public:
 		Window();
-		~Window();
+		virtual ~Window();
 
+	public:
+		void Show();
+		void Hide();
+		void Close();
+		void Focus();
+
+	private:
+		UniquePtr<NullWindow> m_WindowInstance;
 	};
 }

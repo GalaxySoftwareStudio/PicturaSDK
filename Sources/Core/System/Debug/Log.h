@@ -6,7 +6,7 @@
 #endif
 
 #ifdef PICTURA_RELEASE
-	#define DEFAULT_LOGLEVEL LogLevel::Off
+	#define DEFAULT_LOGLEVEL LogLevel::Fatal
 #endif
 
 namespace Pictura::Debug
