@@ -21,13 +21,21 @@ namespace Pictura::UI
 		Debug::Log::GetFrameworkLog().Info("Destroying Win32 Window...");
 	}
 
+	void NTWindow::UpdateWindow()
+	{
+
+	}
+
 	void NTWindow::Show()
 	{
-		throw NotImplementedException();
+		ShowWindow(m_wndHandle, SW_SHOW);
+		SetForegroundWindow(m_wndHandle);
+		SetFocus(m_wndHandle);
 	}
 
 	void NTWindow::Hide()
 	{
+		ShowWindow(m_wndHandle, SW_HIDE);
 		throw NotImplementedException();
 	}
 

@@ -16,9 +16,7 @@ public:
 		GetApplicationLog().Info("Application is running !");
 
 		auto* wnd = new UI::Window();
-		//wnd->Show();
-
-		Console::Pause();
+		wnd->Show();
 
 		Exit();
 	}
