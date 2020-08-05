@@ -13,7 +13,8 @@ namespace Pictura::UI
 	NTWindow::NTWindow()
 	{
 		Debug::Log::GetFrameworkLog().Info("Creating Win32 Window...");
-		m_wndHandle = SetupWindow();
+		m_Handle = SetupWindow();
+		SetWindowLongPtr((HWND)m_Handle, GWLP_USERDATA, (LONG_PTR)this);
 	}
 
 	NTWindow::~NTWindow()
@@ -28,20 +29,22 @@ namespace Pictura::UI
 
 	void NTWindow::Show()
 	{
-		ShowWindow(m_wndHandle, SW_SHOW);
-		SetForegroundWindow(m_wndHandle);
-		SetFocus(m_wndHandle);
+		ShowWindow((HWND)m_Handle, SW_SHOW);
+		SetForegroundWindow((HWND)m_Handle);
+		SetFocus((HWND)m_Handle);
+		SetWindowText((HWND)m_Handle, WideString(Title.begin(), Title.end()).c_str());
 	}
 
 	void NTWindow::Hide()
 	{
-		ShowWindow(m_wndHandle, SW_HIDE);
+		ShowWindow((HWND)m_Handle, SW_HIDE);
 		throw NotImplementedException();
 	}
 
 	void NTWindow::Close()
 	{
-		throw NotImplementedException();
+		NullWindow::Close();
+		SendMessage((HWND)m_Handle, WM_SYSCOMMAND, SC_CLOSE, 0);
 	}
 
 	void NTWindow::Focus()

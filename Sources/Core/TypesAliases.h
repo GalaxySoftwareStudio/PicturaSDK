@@ -2,11 +2,15 @@
 #include "PicturaPCH.h"
 
 using String = std::string;
+using WideString = std::wstring;
 
 using NativeHandleType = std::thread::native_handle_type;
 
 template <typename T>
 using Vector = std::vector<T>;
+
+template <typename T, typename T2>
+using Pair = std::pair<T, T2>;
 
 template <typename T, typename T2>
 using Map = std::map<T, T2>;
@@ -70,6 +74,13 @@ namespace Pictura::Types
 		{
 			return "";
 		}
+	}
+
+	template <typename T>
+	uint32 GetObjectId(const T& obj)
+	{
+		uint32 id = reinterpret_cast<uint32>(obj);
+		return id;
 	}
 
 	template <typename E>

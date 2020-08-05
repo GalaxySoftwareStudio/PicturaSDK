@@ -1,7 +1,10 @@
 #pragma once
 #include <cstdio>
+#include <io.h>
+#include <fcntl.h>
 #include <iomanip>
 #include <iostream>
+#include <fstream>
 #include <memory>
 #include <utility>
 #include <algorithm>

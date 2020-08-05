@@ -11,10 +11,7 @@ namespace Pictura::UI
 		virtual ~Window();
 
 	public:
-		void Show();
-		void Hide();
-		void Close();
-		void Focus();
+		NullWindow* operator->() const { return m_WindowInstance.get(); }
 
 	private:
 		UniquePtr<NullWindow> m_WindowInstance;

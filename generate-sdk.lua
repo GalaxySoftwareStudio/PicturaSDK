@@ -96,7 +96,7 @@ project "PicturaFramework"
 -- Pictura Demo project --
 project "PicturaDemo"
 	location "Examples/%{prj.name}/Sources"
-	kind "ConsoleApp"
+	kind "WindowedApp"
 	language "C++"
 	cppdialect "C++17"
 	staticruntime "on"

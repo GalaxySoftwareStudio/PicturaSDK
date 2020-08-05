@@ -1,6 +1,7 @@
 #pragma once
 #include "Core/CoreFramework.h"
 #include "Core/System/Runtime/Application.h"
+#include "Core/System/Console.h"
 
 #define APPLICATION(ClassName)\
 Pictura::Runtime::Application* Pictura::Runtime::InitApplication()\
@@ -21,9 +22,17 @@ void InvalidParameterHandler(const wchar_t* Expression, const wchar_t* Function,
 void SetupEnvironment()
 {
 #ifdef PLATFORM_WINDOWS
+	#ifdef PICTURA_DEBUG
+		if (!Pictura::Console::Init()) { throw RuntimeException("Failed to initialized debug console !"); }
+	#endif
+
 	_set_invalid_parameter_handler(InvalidParameterHandler);
-	_CrtSetReportMode(_CRT_ASSERT, _CRTDBG_MODE_FILE | _CRTDBG_MODE_DEBUG);
-	_CrtSetReportFile(_CRT_ASSERT, _CRTDBG_FILE_STDERR);
+    _CrtSetReportMode( _CRT_ASSERT, _CRTDBG_MODE_FILE );
+    _CrtSetReportFile( _CRT_ASSERT, _CRTDBG_FILE_STDERR );
+    _CrtSetReportMode( _CRT_ERROR, _CRTDBG_MODE_FILE );
+    _CrtSetReportFile( _CRT_ERROR, _CRTDBG_FILE_STDERR);
+    _CrtSetReportMode( _CRT_WARN, _CRTDBG_MODE_FILE );
+    _CrtSetReportFile( _CRT_WARN, _CRTDBG_FILE_STDERR);
 	_CrtSetDebugFillThreshold(0);
 #else
 
@@ -41,7 +50,14 @@ int main(int argc, char** argv)
 
 	app->Init(e); //Initialize the application thread
 
-	while (app->ApplicationThread.get()) { std::cout << ""; } //Wait for the application execution to be complete
+	while (app->ApplicationThread.get()) { } //Wait for the application execution to be complete
 
 	delete app; //Free all application ressources
 }
+
+#ifdef PLATFORM_WINDOWS
+int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, int nCmdShow)
+{
+	main(__argc, __argv);
+}
+#endif

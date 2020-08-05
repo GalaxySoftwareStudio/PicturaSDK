@@ -4,6 +4,7 @@
 namespace Pictura
 {
 	Mutex Console::m_ConsoleMutex;
+	bool Console::Initialized;
 
 	Console::Console()
 	{
@@ -13,6 +14,15 @@ namespace Pictura
 	Console::~Console()
 	{
 
+	}
+
+	bool Console::Init()
+	{
+		if (Initialized) { return true; }
+#ifdef PLATFORM_WINDOWS
+		Initialized = CreateNewConsole(1024);
+		return Initialized;
+#endif
 	}
 
 	void Console::Print(String Message, Console::ConsoleColor Color)
@@ -83,6 +93,8 @@ namespace Pictura
 		std::cout << Message << std::endl;
 
 		SetConsoleTextAttribute(hConsole, 7);
+		OutputDebugString(WideString(Message.begin(), Message.end()).c_str());
+		OutputDebugString(L"\n");
 #endif
 		m_ConsoleMutex.unlock();
 	}

@@ -1,5 +1,7 @@
 #pragma once
 #include "Core/CoreFramework.h"
+#include "Core/Events/Event.h"
+#include "Core/Events/EventArgs/CancelEventArgs.h"
 #include "Core/System/Debug/Log.h"
 #include "Core/Exceptions/Exceptions.h"
 
@@ -15,14 +17,30 @@ namespace Pictura::UI
 	public:
 		virtual ~NullWindow() {}
 
-	private:
-		virtual void UpdateWindow() = 0;
-
 	public:
 		virtual void Show() = 0;
 		virtual void Hide() = 0;
-		virtual void Close() = 0;
+
+		virtual void Close()
+		{
+			auto it = WindowList.find(m_Handle);
+			if (it != WindowList.end())
+			{
+				WindowList.erase(it);
+			}
+		}
+
 		virtual void Focus() = 0;
+
+	public:
+		NativeHandleType GetHandle() { return m_Handle; }
+		static inline Map<NativeHandleType, UI::NullWindow*> WindowList = { };
+
+	protected:
+		NativeHandleType m_Handle = nullptr;
+
+	public:
+		event(CancelEventArgs, Closing);
 
 	public:
 		WindowState WindowState = WindowState::Normal;
@@ -30,7 +48,8 @@ namespace Pictura::UI
 		bool Resizable = true;
 		bool Decorated = true;
 
-		int Width, Height = 400;
+		int Width = 800;
+		int Height = 450;
 
 		String Title = "Untitled window";
 	};

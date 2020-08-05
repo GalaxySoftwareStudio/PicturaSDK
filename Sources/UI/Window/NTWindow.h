@@ -48,13 +48,52 @@ namespace Pictura::UI
 
 		static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		{
-			Log::GetFrameworkLog().Info("WTF LES ZAMI");
-			return DefWindowProc(hWnd, uMsg, wParam, lParam);
+			switch (uMsg)
+			{
+			case WM_MOVE:
+				{
+					//TODO : Implement Moved event
+				}
+				break;
+			case WM_CLOSE:
+				{
+					CancelEventArgs e = CancelEventArgs(false);
+					NTWindow* ntWnd = (NTWindow*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
+					ntWnd->OnClosing(e);
+					if (!e.Cancel)
+					{
+						DestroyWindow(hWnd);
+						delete ntWnd;
+					}
+				}
+				break;
+			case WM_QUIT:
+				{
+					Log::GetFrameworkLog().Info("WM_QUIT");
+				}	
+				break;
+			case WM_DESTROY:
+				{
+
+				}
+				break;
+			default:
+				return DefWindowProc(hWnd, uMsg, wParam, lParam);
+				break;
+			}
+
+			return 0;
 		}
 
 		HWND SetupWindow()
 		{
-			const wchar_t WINDOW_CLASS[] = L"WindowClass";
+			WideString wideTitle = WideString(Title.begin(), Title.end());
+			String ID = Types::ToString(Types::GetObjectId(this));
+			WideString wndId = WideString(ID.begin(), ID.end());
+
+			WideString className = wideTitle + L"_" + wndId;
+
+			LPCWSTR WINDOW_CLASS = className.c_str();
 
 			WNDCLASSEX wndClass = { };
 
@@ -75,6 +114,8 @@ namespace Pictura::UI
 			{
 				throw RuntimeException("Failed to register Win32 window class !");
 			}
+
+			Log::GetFrameworkLog().Debug("Registered window class '" + String(className.begin(), className.end()) + "'");
 
 			int screenWidth = GetSystemMetrics(SM_CXSCREEN);
 			int screenHeight = GetSystemMetrics(SM_CYSCREEN);
@@ -108,7 +149,7 @@ namespace Pictura::UI
 
 			AdjustWindowRectEx(&wndRect, GetWindowStyle(), FALSE, GetWindowExStyle());
 			
-			HWND fHandle = CreateWindowEx(GetWindowExStyle(), WINDOW_CLASS, std::wstring(Title.begin(), Title.end()).c_str(), GetWindowStyle(),
+			HWND fHandle = CreateWindowEx(GetWindowExStyle(), WINDOW_CLASS, WideString(Title.begin(), Title.end()).c_str(), GetWindowStyle(),
 										  CW_USEDEFAULT, CW_USEDEFAULT, Width, Height,
 										  NULL, NULL, GetModuleHandle(0), NULL);
 
@@ -129,7 +170,7 @@ namespace Pictura::UI
 		virtual void Focus();
 
 	private:
-		HWND m_wndHandle;
+		//HWND m_wndHandle;
 		
 	};
 }

@@ -20,37 +20,33 @@ namespace Pictura::Runtime
 	class Application
 	{
 	public:
-		enum class CloseBehavior
-		{
-			OnMainWindowClosed,
-			OnAllWindowClosed,
-			OnRequestExit
-		};
-
-	public:
 		Application();
 		virtual ~Application() { }
 
 	public:
+		void Init(StartupEventArgs& e) { this->ApplicationThread.reset(new Threading::Thread(&Application::Run, this, e)); }
 		void Run(StartupEventArgs e);
 		void Exit();
-
-	public:
+		void Update();
 		Debug::Log& GetApplicationLog() { return *m_ApplicationLog; }
-		void Init(StartupEventArgs& e) { this->ApplicationThread.reset(new Threading::Thread(&Application::Run, this, e)); }
+
+	private:
 
 	public:
 		event(StartupEventArgs, ApplicationStart);
 		event(EventArgs, ApplicationClose);
 
 	public:
-		UniquePtr<Threading::Thread> ApplicationThread;
 		Vector<String> Arguments;
-		Application::CloseBehavior ApplicationCloseBehavior;
+		UniquePtr<Threading::Thread> ApplicationThread;
 
 		static Application* CurrentApplication;
 
 	private:
+		#ifdef PLATFORM_WINDOWS
+			MSG m_ApplicationMessage = { };
+		#endif
+
 		SharedPtr<Debug::Log> m_ApplicationLog = Types::MakeShared<Debug::Log>("Application");
 		bool m_isQuitting = false;
 	};

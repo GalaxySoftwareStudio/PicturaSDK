@@ -12,31 +12,11 @@ namespace Pictura::UI
 #elif defined(PLATFORM_MACOS)
 		m_WindowInstance = Types::MakeUnique<CocoaWindow>()
 #endif
+		NullWindow::WindowList.insert(Pair<NativeHandleType, NullWindow*>(m_WindowInstance->GetHandle(), m_WindowInstance.get()));
 	}
 
 	Window::~Window()
 	{
 		m_WindowInstance.reset();
 	}
-
-	void Window::Show()
-	{
-		m_WindowInstance->Show();
-	}
-
-	void Window::Hide()
-	{
-		m_WindowInstance->Hide();
-	}
-
-	void Window::Close()
-	{
-		m_WindowInstance->Close();
-	}
-
-	void Window::Focus()
-	{
-		m_WindowInstance->Focus();
-	}
-
 }
