@@ -5,6 +5,11 @@ namespace Pictura::UI
 {
 	Window::Window()
 	{
+		CreateNativeWindow();
+	}
+
+	void Window::CreateNativeWindow()
+	{
 #if defined(PLATFORM_WINDOWS)
 		m_WindowInstance = Types::MakeUnique<NTWindow>();
 #elif defined(PLATFORM_LINUX)
@@ -12,6 +17,7 @@ namespace Pictura::UI
 #elif defined(PLATFORM_MACOS)
 		m_WindowInstance = Types::MakeUnique<CocoaWindow>()
 #endif
+
 		NullWindow::WindowList.insert(Pair<NativeHandleType, NullWindow*>(m_WindowInstance->GetHandle(), m_WindowInstance.get()));
 	}
 

@@ -5,7 +5,7 @@ class DemoApplication : public Application
 {
 public:
 	UI::Window MainWindow;
-	UI::Window AnotherWindow;
+	//UI::Window AnotherWindow;
 
 public:
 	DemoApplication()
@@ -24,8 +24,8 @@ public:
 		MainWindow->Title = "MainWindow";
 		MainWindow->Show();
 
-		AnotherWindow->Title = "Another Window";
-		AnotherWindow->Show();
+		//AnotherWindow->Title = "Another Window";
+		//AnotherWindow->Show();
 	}
 
 	void MainWindow_Closing(CancelEventArgs& e)

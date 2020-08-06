@@ -1,5 +1,6 @@
 #pragma once
 #include "Core/CoreFramework.h"
+#include "Core/Threading/Thread.h"
 #include "Core/Events/Event.h"
 #include "Core/Events/EventArgs/CancelEventArgs.h"
 #include "Core/System/Debug/Log.h"

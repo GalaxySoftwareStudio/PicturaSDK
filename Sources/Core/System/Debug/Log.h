@@ -1,11 +1,11 @@
 #pragma once
 #include "Core/CoreFramework.h"
 
-#ifdef PICTURA_DEBUG
+#if defined(PICTURA_DEBUG) || defined(APPLICATION_DEBUG)
 	#define DEFAULT_LOGLEVEL LogLevel::All
 #endif
 
-#ifdef PICTURA_RELEASE
+#if defined(PICTURA_RELEASE) || defined(APPLICATION_RELEASE)
 	#define DEFAULT_LOGLEVEL LogLevel::Fatal
 #endif
 

@@ -1,4 +1,5 @@
 #pragma once
+#include "Core/Threading/Thread.h"
 #include "NTWindow.h"
 #include "X11Window.h"
 
@@ -14,6 +15,9 @@ namespace Pictura::UI
 		NullWindow* operator->() const { return m_WindowInstance.get(); }
 
 	private:
-		UniquePtr<NullWindow> m_WindowInstance;
+		void CreateNativeWindow();
+
+	private:
+		UniquePtr<NullWindow> m_WindowInstance = nullptr;
 	};
 }

@@ -137,11 +137,11 @@ project "PicturaDemo"
 		links {"pthread"}
 
 	filter "configurations:Debug"
-		defines "PICTURA_DEBUG"
+		defines "APPLICATION_DEBUG"
 		runtime "Debug"
 		symbols "on"
 
 	filter "configurations:Release"
-		defines "PICTURA_RELEASE"
+		defines "APPLICATION_RELEASE"
 		runtime "Release"
 		optimize "on"

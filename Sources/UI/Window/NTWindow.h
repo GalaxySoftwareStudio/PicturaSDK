@@ -1,5 +1,6 @@
 #pragma once
 #include "NullWindow.h"
+#include "Core/System/Runtime/Runtime.h"
 
 namespace Pictura::UI
 {
@@ -95,11 +96,11 @@ namespace Pictura::UI
 
 			LPCWSTR WINDOW_CLASS = className.c_str();
 
-			WNDCLASSEX wndClass = { };
+			WNDCLASSEX wndClass = {0};
 
 			wndClass.cbSize = sizeof(WNDCLASSEX);
 			wndClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
-			wndClass.lpfnWndProc = WndProc;
+			wndClass.lpfnWndProc = &NTWindow::WndProc;
 			wndClass.cbClsExtra = 0;
 			wndClass.cbWndExtra = 0;
 			wndClass.hInstance = GetModuleHandle(NULL);
@@ -109,7 +110,7 @@ namespace Pictura::UI
 			wndClass.lpszMenuName = NULL;
 			wndClass.lpszClassName = WINDOW_CLASS;
 			wndClass.hIconSm = LoadIcon(NULL, IDI_WINLOGO);
-
+			
 			if (!RegisterClassEx(&wndClass))
 			{
 				throw RuntimeException("Failed to register Win32 window class !");
@@ -159,9 +160,6 @@ namespace Pictura::UI
 
 			return fHandle;
 		}
-
-	private:
-		virtual void UpdateWindow();
 
 	public:
 		virtual void Show();

@@ -2,6 +2,7 @@
 #include "Core/CoreFramework.h"
 #include "Core/System/Runtime/Application.h"
 #include "Core/System/Console.h"
+#include "Core/System/Runtime/Runtime.h"
 
 #define APPLICATION(ClassName)\
 Pictura::Runtime::Application* Pictura::Runtime::InitApplication()\
@@ -22,7 +23,7 @@ void InvalidParameterHandler(const wchar_t* Expression, const wchar_t* Function,
 void SetupEnvironment()
 {
 #ifdef PLATFORM_WINDOWS
-	#ifdef PICTURA_DEBUG
+	#if defined(PICTURA_DEBUG) || defined(APPLICATION_DEBUG)
 		if (!Pictura::Console::Init()) { throw RuntimeException("Failed to initialized debug console !"); }
 	#endif
 

@@ -19,13 +19,13 @@ namespace Pictura::Runtime
 			Update();
 		}
 		this->OnApplicationClose(*Events::EmptyEventArgs);
-		delete ApplicationThread.release();
+		//delete ApplicationThread.release();
 	}
 
 	void Application::Update()
 	{
+		Debug::Log::GetFrameworkLog().Debug("Update application");
 #ifdef PLATFORM_WINDOWS
-		Debug::Log::GetFrameworkLog().Debug("Update");
 		if (PeekMessage(&m_ApplicationMessage, NULL, 0, 0, PM_REMOVE))
 		{
 			TranslateMessage(&m_ApplicationMessage);

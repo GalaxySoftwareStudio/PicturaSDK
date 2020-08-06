@@ -1,5 +1,6 @@
 #include "PicturaPCH.h"
 #include "NTWindow.h"
+#include "Core/System/Runtime/Runtime.h"
 
 #ifdef PLATFORM_WINDOWS
 extern "C" {
@@ -12,6 +13,7 @@ namespace Pictura::UI
 {
 	NTWindow::NTWindow()
 	{
+		//TODO : [IMPORTANT] Create each window in a separate thread
 		Debug::Log::GetFrameworkLog().Info("Creating Win32 Window...");
 		m_Handle = SetupWindow();
 		SetWindowLongPtr((HWND)m_Handle, GWLP_USERDATA, (LONG_PTR)this);
@@ -20,11 +22,6 @@ namespace Pictura::UI
 	NTWindow::~NTWindow()
 	{
 		Debug::Log::GetFrameworkLog().Info("Destroying Win32 Window...");
-	}
-
-	void NTWindow::UpdateWindow()
-	{
-
 	}
 
 	void NTWindow::Show()

@@ -24,7 +24,11 @@ namespace Pictura::Runtime
 		virtual ~Application() { }
 
 	public:
-		void Init(StartupEventArgs& e) { this->ApplicationThread.reset(new Threading::Thread(&Application::Run, this, e)); }
+		void Init(StartupEventArgs& e)
+		{
+			//Threading::Thread* appThread = new Threading::Thread(&Application::Run, this, e);
+			this->ApplicationThread = Types::MakeUnique<Threading::Thread>(&Application::Run, this, e);
+		}
 		void Run(StartupEventArgs e);
 		void Exit();
 		void Update();
