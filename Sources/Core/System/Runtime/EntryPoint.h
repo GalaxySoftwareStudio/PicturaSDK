@@ -51,7 +51,7 @@ int main(int argc, char** argv)
 
 	app->Init(e); //Initialize the application thread
 
-	while (app->ApplicationThread.get()) { } //Wait for the application execution to be complete
+	while (!app->ShouldQuit()) { std::cout << ""; } //Wait for the application execution to be complete
 
 	delete app; //Free all application ressources
 }

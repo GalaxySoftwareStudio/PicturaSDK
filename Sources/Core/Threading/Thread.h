@@ -19,6 +19,11 @@ namespace Pictura::Threading
 		};
 
 	public:
+		Thread()
+		{
+
+		}
+
 		template <typename... _Args>
 		Thread(void(*function)(_Args...), _Args ...args)
 		{
@@ -30,10 +35,8 @@ namespace Pictura::Threading
 				ThreadId = std::hash<std::thread::id>{}(threadObj->get_id());
 				ThreadName = "THREAD_" + Types::ToString(ThreadId);
 				Handle = threadObj->native_handle();
-				ThreadStack.push_back(Types::MakeTuple(ThreadId, this));
+				ThreadStack.insert(ThreadStack.begin(), { ThreadId, this });
 				threadObj->detach();
-
-				Debug::Log::GetFrameworkLog().Debug("Creating thread [" + ThreadName + "]");
 			}
 		}
 
@@ -42,22 +45,20 @@ namespace Pictura::Threading
 		{
 			if (function != nullptr)
 			{
-				threadObj = Types::MakeUnique<std::thread>(function, thisPtr, args...);
+				threadObj = new std::thread(function, thisPtr, args...);
 				isRunning = true;
 
 				ThreadId = std::hash<std::thread::id>{}(threadObj->get_id());
 				ThreadName = "THREAD_" + Types::ToString(ThreadId);
 				Handle = threadObj->native_handle();
-				ThreadStack.push_back(Types::MakeTuple(ThreadId, this));
+				ThreadStack.insert(ThreadStack.begin(), { ThreadId, this });
 				threadObj->detach();
-
-				Debug::Log::GetFrameworkLog().Debug("Creating thread [" + ThreadName + "]");
 			}
 		}
 
 		~Thread()
 		{
-			//StopThread();
+			StopThread();
 		}
 
 	public:
@@ -69,18 +70,19 @@ namespace Pictura::Threading
 		static void Delay(int milliseconds);
 		static void SetPriority(Thread& thread, ThreadPriority priority);
 		static Thread* CurrentThread();
+		static void StopAllThread();
 
 	public:
 		String ThreadName;
 		ThreadHandle Handle;
 
 	private:
-		static bool locker;
+		static Atomic<bool> locker;
 		bool isRunning;
-		UniquePtr<std::thread> threadObj;
+		std::thread* threadObj;
 		uint64 ThreadId;
 
-		static Vector<Tuple<uint64, Thread*>> ThreadStack;
+		static Map<uint64, Thread*> ThreadStack;
 	};
 }
 

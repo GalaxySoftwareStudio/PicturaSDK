@@ -13,35 +13,46 @@ namespace Pictura::UI
 {
 	NTWindow::NTWindow()
 	{
-		//TODO : [IMPORTANT] Create each window in a separate thread
 		Debug::Log::GetFrameworkLog().Info("Creating Win32 Window...");
-		m_Handle = SetupWindow();
-		SetWindowLongPtr((HWND)m_Handle, GWLP_USERDATA, (LONG_PTR)this);
+		SetupWindow();
 	}
 
 	NTWindow::~NTWindow()
 	{
 		Debug::Log::GetFrameworkLog().Info("Destroying Win32 Window...");
+		isActive = false;
 	}
 
 	void NTWindow::Show()
 	{
-		ShowWindow((HWND)m_Handle, SW_SHOW);
-		SetForegroundWindow((HWND)m_Handle);
-		SetFocus((HWND)m_Handle);
-		SetWindowText((HWND)m_Handle, WideString(Title.begin(), Title.end()).c_str());
+		ShowWindow(m_Handle, SW_SHOW);
+		SetForegroundWindow(m_Handle);
+		SetFocus(m_Handle);
+		SetWindowText(m_Handle, WideString(Title.begin(), Title.end()).c_str());
+		Shown(*EmptyEventArgs);
+	}
+
+	void NTWindow::Update()
+	{
+		isActive = true;
+		while (isActive)
+		{
+			if (PeekMessage(&m_msgHandler, m_Handle, 0, 0, PM_REMOVE))
+			{
+				TranslateMessage(&m_msgHandler);
+				DispatchMessage(&m_msgHandler);
+			}
+		}
 	}
 
 	void NTWindow::Hide()
 	{
-		ShowWindow((HWND)m_Handle, SW_HIDE);
-		throw NotImplementedException();
+		ShowWindow(m_Handle, SW_HIDE);
 	}
 
 	void NTWindow::Close()
 	{
-		NullWindow::Close();
-		SendMessage((HWND)m_Handle, WM_SYSCOMMAND, SC_CLOSE, 0);
+		SendMessage(m_Handle, WM_SYSCOMMAND, SC_CLOSE, 0);
 	}
 
 	void NTWindow::Focus()

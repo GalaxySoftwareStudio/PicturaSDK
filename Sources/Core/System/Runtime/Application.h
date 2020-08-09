@@ -21,17 +21,19 @@ namespace Pictura::Runtime
 	{
 	public:
 		Application();
-		virtual ~Application() { }
+		virtual ~Application()
+		{
+			Threading::Thread::StopAllThread();
+		}
 
 	public:
 		void Init(StartupEventArgs& e)
 		{
-			//Threading::Thread* appThread = new Threading::Thread(&Application::Run, this, e);
-			this->ApplicationThread = Types::MakeUnique<Threading::Thread>(&Application::Run, this, e);
+			this->ApplicationThread.reset(new Threading::Thread(&Application::Run, this, e));
 		}
 		void Run(StartupEventArgs e);
 		void Exit();
-		void Update();
+		bool ShouldQuit() { return m_isQuitting; }
 		Debug::Log& GetApplicationLog() { return *m_ApplicationLog; }
 
 	private:
@@ -48,7 +50,7 @@ namespace Pictura::Runtime
 
 	private:
 		#ifdef PLATFORM_WINDOWS
-			MSG m_ApplicationMessage = { };
+			MSG m_ApplicationMessage = { 0 };
 		#endif
 
 		SharedPtr<Debug::Log> m_ApplicationLog = Types::MakeShared<Debug::Log>("Application");

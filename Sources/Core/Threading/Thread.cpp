@@ -3,8 +3,8 @@
 
 namespace Pictura::Threading
 {
-	Vector<Tuple<uint64, Thread*>> Thread::ThreadStack = { };
-	bool Thread::locker = false;
+	Map<uint64, Thread*> Thread::ThreadStack = { };
+	Atomic<bool> Thread::locker = false;
 
 	void Thread::SetPriority(Thread& thread, ThreadPriority priority)
 	{
@@ -31,11 +31,12 @@ namespace Pictura::Threading
 				Debug::Log::GetFrameworkLog().Debug("Joining thread [" + ThreadName + "]");
 				threadObj->join();
 			}
-			isRunning = false;
-			threadObj = Types::MakeUnique<std::thread>([]() {});
-			Debug::Log::GetFrameworkLog().Debug("Stopping thread [" + ThreadName + "]");
 
-			threadObj.reset();
+			ThreadStack.erase(ThreadId);
+
+			isRunning = false;
+			threadObj = new std::thread([]() {});
+			Debug::Log::GetFrameworkLog().Debug("Stopping thread [" + ThreadName + "]");
 		}
 		else
 		{
@@ -46,17 +47,25 @@ namespace Pictura::Threading
 
 	Thread* Thread::CurrentThread()
 	{
-		uint64 CTID = std::hash<std::thread::id>{}(std::this_thread::get_id());
-		for (auto& t : ThreadStack)
+		Thread* nullThread = new Thread();
+		nullThread->ThreadName = "UnknownThread_0";
+		nullThread->ThreadId = 0;
+		try
 		{
-			if (GetTupleValue<Thread*>(t)->ThreadId == CTID)
+			uint64 CTID = std::hash<std::thread::id>{}(std::this_thread::get_id());
+			if (ThreadStack.find(CTID) == ThreadStack.end())
 			{
-				return GetTupleValue<Thread*>(t);
+				Debug::Log::GetFrameworkLog().Warning("Current thread handle was not found !");
+				return nullThread;
 			}
-		}
 
-		throw ThreadException("The current thread was not found... Avoid to call this function from the main thread.");
-		return nullptr;
+			return ThreadStack.at(CTID);
+		}
+		catch (const std::exception&)
+		{
+			Debug::Log::GetFrameworkLog().Warning("Current thread handle was not found !");
+			return nullThread;
+		}
 	}
 
 	void Thread::LockThread()
@@ -78,5 +87,13 @@ namespace Pictura::Threading
 	void Thread::UnlockThread()
 	{
 		locker = false;
+	}
+
+	void Thread::StopAllThread()
+	{
+		for (auto const& [id, thread] : ThreadStack)
+		{
+			thread->StopThread();
+		}
 	}
 }

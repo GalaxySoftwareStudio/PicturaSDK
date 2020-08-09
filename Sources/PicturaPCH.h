@@ -24,6 +24,7 @@
 #include <unordered_set>
 
 #include <thread>
+#include <atomic>
 #include <mutex>
 #include <shared_mutex>
 
@@ -31,6 +32,7 @@
 
 #ifdef PLATFORM_WINDOWS
 	#define	WIN32_LEAN_AND_MEAN
+	#define NO_STRICT
 	#include <Windows.h>
 	#ifdef __cplusplus
 		#include <wrl.h>

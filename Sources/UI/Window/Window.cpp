@@ -5,24 +5,28 @@ namespace Pictura::UI
 {
 	Window::Window()
 	{
-		CreateNativeWindow();
+		m_wndThread = Types::MakeUnique<Threading::Thread>(&Window::CreateNativeWindow, this);
+		Threading::Thread::LockThread();
 	}
 
 	void Window::CreateNativeWindow()
 	{
 #if defined(PLATFORM_WINDOWS)
-		m_WindowInstance = Types::MakeUnique<NTWindow>();
+		m_WindowInstance = new NTWindow();
 #elif defined(PLATFORM_LINUX)
-		m_WindowInstance = Types::MakeUnique<X11Window>());
+		m_WindowInstance = new X11Window();
 #elif defined(PLATFORM_MACOS)
-		m_WindowInstance = Types::MakeUnique<CocoaWindow>()
+		m_WindowInstance = new CocoaWindow();
 #endif
+		Threading::Thread::UnlockThread();
+		NullWindow::WindowList.insert(Pair<NativeHandleType, NullWindow*>(m_WindowInstance->GetHandle(), m_WindowInstance));
 
-		NullWindow::WindowList.insert(Pair<NativeHandleType, NullWindow*>(m_WindowInstance->GetHandle(), m_WindowInstance.get()));
+		m_WindowInstance->OwnerPtr = this;
+		m_WindowInstance->Update();
 	}
 
 	Window::~Window()
 	{
-		m_WindowInstance.reset();
+		
 	}
 }

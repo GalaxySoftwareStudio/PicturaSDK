@@ -29,6 +29,9 @@ using List = std::list<T>;
 
 using Mutex = std::mutex;
 
+template <typename T>
+using Atomic = std::atomic<T>;
+
 typedef unsigned char uint8;
 typedef unsigned short uint16;
 typedef unsigned int uint32;

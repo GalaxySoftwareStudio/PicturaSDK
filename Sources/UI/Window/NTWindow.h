@@ -38,7 +38,7 @@ namespace Pictura::UI
 
 		DWORD GetWindowExStyle()
 		{
-			DWORD result = WS_EX_APPWINDOW | WS_EX_ACCEPTFILES;
+			DWORD result = WS_EX_APPWINDOW | WS_EX_ACCEPTFILES | WS_EX_CLIENTEDGE | WS_EX_TRANSPARENT;
 
 			if (WindowState == WindowState::Fullscreen || Topmost) {
 				result |= WS_EX_TOPMOST | WS_EX_WINDOWEDGE;
@@ -47,37 +47,69 @@ namespace Pictura::UI
 			return result;
 		}
 
-		static LRESULT CALLBACK WndProc(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+		static LRESULT CALLBACK MessageRouter(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
+		{
+			NTWindow* ntWindow = 0;
+
+			if (uMsg == WM_NCCREATE)
+			{
+				CREATESTRUCT* pCreate = ReinterpretCastTo<CREATESTRUCT*>(lParam);
+				ntWindow = ReinterpretCastTo<NTWindow*>(pCreate->lpCreateParams);
+				::SetWindowLongPtr(hWnd, GWLP_USERDATA, ReinterpretCastTo<LONG_PTR>(ntWindow));
+				ntWindow->m_Handle = hWnd;
+			}
+			else
+			{
+				ntWindow = ReinterpretCastTo<NTWindow*>(GetWindowLongPtr(hWnd, GWLP_USERDATA));
+			}
+			
+			if (ntWindow) {
+				return ntWindow->WindowProcedure(hWnd, uMsg, wParam, lParam);
+			}
+			else {
+				return DefWindowProc(hWnd, uMsg, wParam, lParam);
+			}
+		}
+
+		LRESULT CALLBACK WindowProcedure(HWND hWnd, UINT uMsg, WPARAM wParam, LPARAM lParam)
 		{
 			switch (uMsg)
 			{
 			case WM_MOVE:
-				{
-					//TODO : Implement Moved event
-				}
-				break;
+			{
+				int xPos = (int)(short)LOWORD(lParam);
+				int yPos = (int)(short)HIWORD(lParam);
+				PositionEventArgs e = PositionEventArgs(Maths::Position(xPos, yPos));
+				PositionChanging(e);
+			}
+			break;
 			case WM_CLOSE:
+			{
+				CancelEventArgs e = CancelEventArgs(false);
+				this->OnClosing(e);
+				if (!e.Cancel)
 				{
-					CancelEventArgs e = CancelEventArgs(false);
-					NTWindow* ntWnd = (NTWindow*)GetWindowLongPtr(hWnd, GWLP_USERDATA);
-					ntWnd->OnClosing(e);
-					if (!e.Cancel)
+					auto it = WindowList.find(m_Handle);
+					if (it != WindowList.end())
 					{
-						DestroyWindow(hWnd);
-						delete ntWnd;
+						WindowList.erase(it);
 					}
-				}
-				break;
-			case WM_QUIT:
-				{
-					Log::GetFrameworkLog().Info("WM_QUIT");
-				}	
-				break;
-			case WM_DESTROY:
-				{
 
+					DestroyWindow(hWnd);
+					delete this;
 				}
-				break;
+			}
+			break;
+			case WM_QUIT:
+			{
+				Log::GetFrameworkLog().Info("WM_QUIT from Window");
+			}
+			break;
+			case WM_DESTROY:
+			{
+
+			}
+			break;
 			default:
 				return DefWindowProc(hWnd, uMsg, wParam, lParam);
 				break;
@@ -86,7 +118,7 @@ namespace Pictura::UI
 			return 0;
 		}
 
-		HWND SetupWindow()
+		void SetupWindow()
 		{
 			WideString wideTitle = WideString(Title.begin(), Title.end());
 			String ID = Types::ToString(Types::GetObjectId(this));
@@ -100,7 +132,7 @@ namespace Pictura::UI
 
 			wndClass.cbSize = sizeof(WNDCLASSEX);
 			wndClass.style = CS_HREDRAW | CS_VREDRAW | CS_OWNDC;
-			wndClass.lpfnWndProc = &NTWindow::WndProc;
+			wndClass.lpfnWndProc = &NTWindow::MessageRouter;
 			wndClass.cbClsExtra = 0;
 			wndClass.cbWndExtra = 0;
 			wndClass.hInstance = GetModuleHandle(NULL);
@@ -150,15 +182,15 @@ namespace Pictura::UI
 
 			AdjustWindowRectEx(&wndRect, GetWindowStyle(), FALSE, GetWindowExStyle());
 			
-			HWND fHandle = CreateWindowEx(GetWindowExStyle(), WINDOW_CLASS, WideString(Title.begin(), Title.end()).c_str(), GetWindowStyle(),
+			m_Handle = CreateWindowEx(GetWindowExStyle(), WINDOW_CLASS, WideString(Title.begin(), Title.end()).c_str(), GetWindowStyle(),
 										  CW_USEDEFAULT, CW_USEDEFAULT, Width, Height,
-										  NULL, NULL, GetModuleHandle(0), NULL);
+										  NULL, NULL, GetModuleHandle(0), this);
 
-			if (!fHandle) {
+			::SetWindowLongPtr(m_Handle, GWLP_USERDATA, ReinterpretCastTo<LONG_PTR>(this));
+
+			if (!m_Handle) {
 				throw RuntimeException("Failed to create a Win32 window !");
 			}
-
-			return fHandle;
 		}
 
 	public:
@@ -166,9 +198,10 @@ namespace Pictura::UI
 		virtual void Hide();
 		virtual void Close();
 		virtual void Focus();
+		virtual void Update();
 
 	private:
-		//HWND m_wndHandle;
+		MSG m_msgHandler = { 0 };
 		
 	};
 }

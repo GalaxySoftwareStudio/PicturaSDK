@@ -5,7 +5,7 @@ class DemoApplication : public Application
 {
 public:
 	UI::Window MainWindow;
-	//UI::Window AnotherWindow;
+	UI::Window AnotherWindow;
 
 public:
 	DemoApplication()
@@ -13,6 +13,11 @@ public:
 		Log::SetLogLevel(Log::LogLevel::All);
 		ApplicationStart += EventHandler::Bind(&DemoApplication::DemoApplication_ApplicationStart, this);
 		ApplicationClose += EventHandler::Bind(&DemoApplication::DemoApplication_ApplicationClose, this);
+	}
+
+	~DemoApplication()
+	{
+
 	}
 
 	void DemoApplication_ApplicationStart(StartupEventArgs& e)
@@ -24,8 +29,9 @@ public:
 		MainWindow->Title = "MainWindow";
 		MainWindow->Show();
 
-		//AnotherWindow->Title = "Another Window";
-		//AnotherWindow->Show();
+		AnotherWindow->PositionChanging += EventHandler::Bind(&DemoApplication::AnotherWindow_PositionChanged, this);
+		AnotherWindow->Title = "Another Window";
+		AnotherWindow->Show();
 	}
 
 	void MainWindow_Closing(CancelEventArgs& e)
@@ -35,7 +41,13 @@ public:
 			Exit();
 			return;
 		}
+		
 		e.Cancel = true;
+	}
+
+	void AnotherWindow_PositionChanged(PositionEventArgs& e)
+	{
+		GetApplicationLog().Info("AnotherWindow is moving [X=" + Types::ToString(e.Position.X) + " Y=" + Types::ToString(e.Position.Y) + "]");
 	}
 
 	void DemoApplication_ApplicationClose(EventArgs& e)

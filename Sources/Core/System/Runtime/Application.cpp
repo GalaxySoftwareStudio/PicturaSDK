@@ -14,25 +14,9 @@ namespace Pictura::Runtime
 	void Application::Run(StartupEventArgs e)
 	{
 		this->OnApplicationStart(e);
-		while (!m_isQuitting)
-		{
-			Update();
-		}
+		while (!m_isQuitting) { }
 		this->OnApplicationClose(*Events::EmptyEventArgs);
-		//delete ApplicationThread.release();
-	}
-
-	void Application::Update()
-	{
-		Debug::Log::GetFrameworkLog().Debug("Update application");
-#ifdef PLATFORM_WINDOWS
-		if (PeekMessage(&m_ApplicationMessage, NULL, 0, 0, PM_REMOVE))
-		{
-			TranslateMessage(&m_ApplicationMessage);
-			DispatchMessage(&m_ApplicationMessage);
-		}
-#endif
-		
+		ApplicationThread.reset();
 	}
 
 	void Application::Exit()
