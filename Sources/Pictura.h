@@ -5,6 +5,7 @@
 //Pictura
 #include "Core/System/Console.h"
 #include "Core/System/Runtime/Application.h"
+#include "Core/System/Property.h"
 #include "Core/Events/Event.h"
 
 //Pictura::Debug

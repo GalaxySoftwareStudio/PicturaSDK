@@ -79,7 +79,7 @@ namespace Pictura::UI
 			{
 				int xPos = (int)(short)LOWORD(lParam);
 				int yPos = (int)(short)HIWORD(lParam);
-				PositionEventArgs e = PositionEventArgs(Maths::Position(xPos, yPos));
+				PositionEventArgs e = PositionEventArgs(Maths::Position((float)xPos, (float)yPos));
 				PositionChanging(e);
 			}
 			break;

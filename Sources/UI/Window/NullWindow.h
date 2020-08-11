@@ -6,6 +6,7 @@
 #include "WindowEventArgs.h"
 #include "Core/System/Debug/Log.h"
 #include "Core/Exceptions/Exceptions.h"
+#include "Core/System/Property.h"
 
 using namespace Pictura::Debug;
 
@@ -48,6 +49,9 @@ namespace Pictura::UI
 		bool Topmost = false;
 		bool Resizable = true;
 		bool Decorated = true;
+		
+		Property<int> MinWidth = 450;
+		Property<int> MaxWidth = 225;
 
 		int Width = 800;
 		int Height = 450;
