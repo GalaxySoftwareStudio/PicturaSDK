@@ -3,20 +3,15 @@
 
 namespace Pictura::Maths
 {
-	struct Position
+	struct Vector2
 	{
 	public:
-		Position()
-		{
+		Vector2() {
 			X = 0;
 			Y = 0;
 		}
 
-		Position(float x, float y)
-		{
-			X = x;
-			Y = y;
-		}
+		Vector2(float x, float y) : X(x), Y(y) { }
 
 	public:
 		float X = 0;

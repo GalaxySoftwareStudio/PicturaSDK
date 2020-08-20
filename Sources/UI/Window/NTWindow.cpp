@@ -3,7 +3,8 @@
 #include "Core/System/Runtime/Runtime.h"
 
 #ifdef PLATFORM_WINDOWS
-extern "C" {
+extern "C"
+{
 	__declspec(dllexport) DWORD NvOptimusEnablement = 0x00000001;
 	__declspec(dllexport) int AmdPowerXpressRequestHighPerformance = 1;
 }
@@ -28,7 +29,14 @@ namespace Pictura::UI
 		ShowWindow(m_Handle, SW_SHOW);
 		SetForegroundWindow(m_Handle);
 		SetFocus(m_Handle);
-		SetWindowText(m_Handle, WideString(Title.begin(), Title.end()).c_str());
+		SetWindowText(m_Handle, WideString(Title->begin(), Title->end()).c_str());
+
+		RECT rect = {0};
+		if (GetWindowRect(m_Handle, &rect))
+		{
+			Position = {CastTo<float>(rect.left), CastTo<float>(rect.top)};
+		}
+
 		Shown(*EmptyEventArgs);
 	}
 
@@ -59,4 +67,4 @@ namespace Pictura::UI
 	{
 		throw NotImplementedException();
 	}
-}
+} // namespace Pictura::UI

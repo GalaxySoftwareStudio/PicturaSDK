@@ -30,24 +30,38 @@ public:
 		MainWindow->Show();
 
 		AnotherWindow->PositionChanging += EventHandler::Bind(&DemoApplication::AnotherWindow_PositionChanged, this);
+		AnotherWindow->Resized += EventHandler::Bind(&DemoApplication::AnotherWindow_Resized, this);
 		AnotherWindow->Title = "Another Window";
+		GetApplicationLog().Info("wnd = " + (String)AnotherWindow->Title);
 		AnotherWindow->Show();
+
+		Threading::Thread::Delay(3500);
+
+		AnotherWindow->Position = { 500, 500 };
 	}
 
 	void MainWindow_Closing(CancelEventArgs& e)
 	{
+		String previousTitle = MainWindow->Title;
+		MainWindow->Title = "You are about to quit the application !";
 		if (MessageBox(NULL, L"Really quit?", L"My application", MB_OKCANCEL) == IDOK)
 		{
 			Exit();
 			return;
 		}
 		
+		MainWindow->Title = "MainWindow";
 		e.Cancel = true;
+	}
+
+	void AnotherWindow_Resized(SizeEventArgs& e)
+	{
+		AnotherWindow->Title = "AnotherWindow [X=" + Types::ToString(AnotherWindow->Position->X) + " | Y=" + Types::ToString(AnotherWindow->Position->Y) + "]" + " - [Width=" + Types::ToString(AnotherWindow->Size->X) + " | Height=" + Types::ToString(AnotherWindow->Size->Y) + "]";
 	}
 
 	void AnotherWindow_PositionChanged(PositionEventArgs& e)
 	{
-		GetApplicationLog().Info("AnotherWindow is moving [X=" + Types::ToString(e.Position.X) + " Y=" + Types::ToString(e.Position.Y) + "]");
+		AnotherWindow->Title = "AnotherWindow [X=" + Types::ToString(AnotherWindow->Position->X) + " | Y=" + Types::ToString(AnotherWindow->Position->Y) + "]" + " - [Width=" + Types::ToString(AnotherWindow->Size->X) + " | Height=" + Types::ToString(AnotherWindow->Size->Y) + "]";
 	}
 
 	void DemoApplication_ApplicationClose(EventArgs& e)

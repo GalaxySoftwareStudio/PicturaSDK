@@ -7,6 +7,9 @@ using WideString = std::wstring;
 using NativeHandleType = std::thread::native_handle_type;
 
 template <typename T>
+using Function = std::function<T>;
+
+template <typename T>
 using Vector = std::vector<T>;
 
 template <typename T, typename T2>

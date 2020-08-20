@@ -13,9 +13,9 @@ namespace Pictura::Runtime
 
 	void Application::Run(StartupEventArgs e)
 	{
-		this->OnApplicationStart(e);
+		this->evtOnApplicationStart(e);
 		while (!m_isQuitting) { }
-		this->OnApplicationClose(*Events::EmptyEventArgs);
+		this->evtOnApplicationClose(*Events::EmptyEventArgs);
 		ApplicationThread.reset();
 	}
 

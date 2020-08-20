@@ -298,6 +298,8 @@ namespace Pictura
 	};
 
 #define event(EventArgsClass, EventName)\
-	virtual void On##EventName(EventArgsClass& e) { EventName(e); }\
+protected:\
+	virtual void evtOn##EventName(EventArgsClass& e) { EventName(e); }\
+public:\
 	Event<EventArgsClass> EventName
 }
