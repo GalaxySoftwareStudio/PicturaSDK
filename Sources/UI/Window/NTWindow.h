@@ -120,9 +120,6 @@ namespace Pictura::UI
 				RECT BorderRect = {0, 0, 0, 0};
 				BorderRect = GetWindowBorderRect();
 
-				width += BorderRect.right - BorderRect.left;
-				height += BorderRect.bottom - BorderRect.top;
-
 				SizeEventArgs e = SizeEventArgs({CastTo<float>(width), CastTo<float>(height)});
 				this->evtOnResized(e);
 			}
@@ -137,7 +134,7 @@ namespace Pictura::UI
 				{
 					Position = {CastTo<float>(wndPosData->x), CastTo<float>(wndPosData->y)};
 				}
-
+				
 				if ((wndPosData->cx != 0 || wndPosData->cy != 0) && ((wndPosData->flags & SWP_NOSIZE) == 0))
 				{
 					Size = {CastTo<float>(wndPosData->cx), CastTo<float>(wndPosData->cy)};
@@ -291,9 +288,6 @@ namespace Pictura::UI
 
 			int width = CastTo<int>(newValue.X);
 			int height = CastTo<int>(newValue.Y);
-
-			width += BorderRect.right - BorderRect.left;
-			height += BorderRect.bottom - BorderRect.top;
 
 			SetWindowPos(m_Handle, HWND_NOTOPMOST, 0, 0, CastTo<int>(newValue.X), CastTo<int>(newValue.Y), SWP_NOZORDER | SWP_NOACTIVATE | SWP_NOSENDCHANGING | SWP_NOMOVE | SWP_ASYNCWINDOWPOS);
 		}

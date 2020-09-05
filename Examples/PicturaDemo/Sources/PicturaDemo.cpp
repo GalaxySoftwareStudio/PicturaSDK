@@ -5,7 +5,6 @@ class DemoApplication : public Application
 {
 public:
 	UI::Window MainWindow;
-	UI::Window AnotherWindow;
 
 public:
 	DemoApplication()
@@ -28,16 +27,6 @@ public:
 		MainWindow->Closing += EventHandler::Bind(&DemoApplication::MainWindow_Closing, this);
 		MainWindow->Title = "MainWindow";
 		MainWindow->Show();
-
-		AnotherWindow->PositionChanging += EventHandler::Bind(&DemoApplication::AnotherWindow_PositionChanged, this);
-		AnotherWindow->Resized += EventHandler::Bind(&DemoApplication::AnotherWindow_Resized, this);
-		AnotherWindow->Title = "Another Window";
-		GetApplicationLog().Info("wnd = " + (String)AnotherWindow->Title);
-		AnotherWindow->Show();
-
-		Threading::Thread::Delay(3500);
-
-		AnotherWindow->Position = { 500, 500 };
 	}
 
 	void MainWindow_Closing(CancelEventArgs& e)
@@ -52,16 +41,6 @@ public:
 		
 		MainWindow->Title = "MainWindow";
 		e.Cancel = true;
-	}
-
-	void AnotherWindow_Resized(SizeEventArgs& e)
-	{
-		AnotherWindow->Title = "AnotherWindow [X=" + Types::ToString(AnotherWindow->Position->X) + " | Y=" + Types::ToString(AnotherWindow->Position->Y) + "]" + " - [Width=" + Types::ToString(AnotherWindow->Size->X) + " | Height=" + Types::ToString(AnotherWindow->Size->Y) + "]";
-	}
-
-	void AnotherWindow_PositionChanged(PositionEventArgs& e)
-	{
-		AnotherWindow->Title = "AnotherWindow [X=" + Types::ToString(AnotherWindow->Position->X) + " | Y=" + Types::ToString(AnotherWindow->Position->Y) + "]" + " - [Width=" + Types::ToString(AnotherWindow->Size->X) + " | Height=" + Types::ToString(AnotherWindow->Size->Y) + "]";
 	}
 
 	void DemoApplication_ApplicationClose(EventArgs& e)
