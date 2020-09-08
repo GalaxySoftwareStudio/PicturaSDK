@@ -59,6 +59,32 @@ namespace Pictura::UI
         virtual ~NullWindow() {}
 
       public:
+        String WindowStateToString(WindowState State)
+        {
+            String wndState = "UnknownState";
+            switch (State)
+            {
+                case UI::WindowState::Normal:
+                    wndState = "Normal";
+                    break;
+                case UI::WindowState::Minimized:
+                    wndState = "Minimized";
+                    break;
+                case UI::WindowState::Maximized:
+                    wndState = "Maximized";
+                    break;
+                case UI::WindowState::Fullscreen:
+                    wndState = "Fullscreen";
+                    break;
+                default:
+                    String wndState = "UnknownState";
+                    break;
+            }
+
+            return wndState;
+        }
+
+      public:
         virtual void Show() = 0;
         virtual void Hide() = 0;
 
@@ -77,6 +103,10 @@ namespace Pictura::UI
         virtual void OnPositionChanged(const Maths::Vector2 &newValue) = 0;
         virtual void OnSizeChanged(const Maths::Vector2 &newValue) = 0;
         virtual void OnStateChanged(const WindowState &newValue) = 0;
+        virtual void OnResizableChanged(const bool &newValue) = 0;
+        virtual void OnCanMinimizeChanged(const bool &newValue) = 0;
+        virtual void OnCanMaximizeChanged(const bool &newValue) = 0;
+        virtual void OnCanCloseWindowChanged(const bool &newValue) = 0;
 
       public:
         void *OwnerPtr = nullptr;
@@ -96,15 +126,19 @@ namespace Pictura::UI
 
       public:
         Property<bool> Topmost = false;
-        Property<bool> Resizable = true;
         Property<bool> Decorated = true;
+        Property<bool> Resizable = {true, this, &NullWindow::OnResizableChanged};
+        Property<bool> CanCloseWindow = {true, this, &NullWindow::OnCanCloseWindowChanged};
+        Property<bool> CanMaximize = {true, this, &NullWindow::OnCanMaximizeChanged};
+        Property<bool> CanMinimize = {true, this, &NullWindow::OnCanMinimizeChanged};
+
         Property<WindowState> WindowState = {WindowState::Normal, this, &NullWindow::OnStateChanged};
 
         Property<String> Title = {"Untitled Window", this, &NullWindow::OnTitleChanged};
 
         Property<Maths::Vector2> Position = {Maths::Vector2(), this, &NullWindow::OnPositionChanged};
-        Property<Maths::Vector2> Size = {Maths::Vector2(850, 450), this, &NullWindow::OnSizeChanged};
 
+        Property<Maths::Vector2> Size = {Maths::Vector2(850, 450), this, &NullWindow::OnSizeChanged};
         Property<Maths::Vector2> MinSize = Maths::Vector2(425, 225);
         Property<Maths::Vector2> MaxSize = Maths::Vector2();
     };

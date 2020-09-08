@@ -30,11 +30,6 @@ namespace Pictura::UI
         {
             DWORD result = WS_CLIPSIBLINGS | WS_CLIPCHILDREN;
 
-            if (this->WindowState == UI::WindowState::Fullscreen)
-            {
-                result |= WS_POPUP;
-            }
-
             result |= WS_SYSMENU | WS_MINIMIZEBOX;
 
             if (Decorated)
@@ -366,6 +361,26 @@ namespace Pictura::UI
             }
 
             this->evtOnStateChanged(*Events::EmptyEventArgs);
+        }
+
+        virtual void OnResizableChanged(const bool &newValue)
+        {
+            ::SetWindowLong(m_Handle, GWL_STYLE, newValue ? GetWindowLong(m_Handle, GWL_STYLE) | WS_SIZEBOX : GetWindowLong(m_Handle, GWL_STYLE) & ~WS_SIZEBOX);
+        }
+
+        virtual void OnCanCloseWindowChanged(const bool &newValue)
+        {
+            EnableMenuItem(GetSystemMenu(m_Handle, false), SC_CLOSE, newValue ? (MF_BYCOMMAND | MF_ENABLED) : (MF_BYCOMMAND | MF_DISABLED | MF_GRAYED));
+        }
+
+        virtual void OnCanMinimizeChanged(const bool &newValue)
+        {
+            SetWindowLong(m_Handle, GWL_STYLE, newValue ? GetWindowLong(m_Handle, GWL_STYLE) | WS_MINIMIZEBOX : GetWindowLong(m_Handle, GWL_STYLE) & ~WS_MINIMIZEBOX);
+        }
+
+        virtual void OnCanMaximizeChanged(const bool &newValue)
+        {
+            SetWindowLong(m_Handle, GWL_STYLE, newValue ? GetWindowLong(m_Handle, GWL_STYLE) | WS_MAXIMIZEBOX : GetWindowLong(m_Handle, GWL_STYLE) & ~WS_MAXIMIZEBOX);
         }
 
       protected:

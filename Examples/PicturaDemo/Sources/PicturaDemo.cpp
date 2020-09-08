@@ -42,27 +42,7 @@ class DemoApplication : public Application
 
     void MainWindow_StateChanged(EventArgs &e)
     {
-        String wndState = "UnknownState";
-        switch (MainWindow->WindowState)
-        {
-            case UI::WindowState::Normal:
-                wndState = "Normal";
-                break;
-            case UI::WindowState::Minimized:
-                wndState = "Minimized";
-                break;
-            case UI::WindowState::Maximized:
-                wndState = "Maximized";
-                break;
-            case UI::WindowState::Fullscreen:
-                wndState = "Fullscreen";
-                break;
-            default:
-                String wndState = "UnknownState";
-                break;
-        }
-
-        MainWindow->Title = "MainWindow [WindowState = " + wndState + "]";
+        MainWindow->Title = "MainWindow [WindowState = " + MainWindow->WindowStateToString(MainWindow->WindowState) + "]";
     }
 
     void DemoApplication_ApplicationClose(EventArgs &e)
