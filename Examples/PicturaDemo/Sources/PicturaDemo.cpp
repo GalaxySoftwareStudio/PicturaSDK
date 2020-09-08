@@ -31,7 +31,7 @@ class DemoApplication : public Application
         Threading::Thread::Delay(2000);
         MainWindow->WindowState = UI::WindowState::Fullscreen;
         
-        Threading::Thread::Delay(4000);
+        Threading::Thread::Delay(2000);
         MainWindow->WindowState = UI::WindowState::Normal;
 
         GetApplicationLog().Success("WindowState chain state complete !");

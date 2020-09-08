@@ -111,7 +111,7 @@ namespace Pictura::UI
                 return;
             }
 
-            SetWindowPos(m_Handle, HWND_NOTOPMOST, CastTo<int>(Position->X + 32), CastTo<int>(Position->Y + 32), CastTo<int>(Size->X - 48), CastTo<int>(Size->Y - 48), SWP_SHOWWINDOW);
+            SetWindowPos(m_Handle, HWND_NOTOPMOST, 32, 16, CastTo<int>(Size->X - 64), CastTo<int>(Size->Y - 64), SWP_SHOWWINDOW);
             ShowWindow(m_Handle, SW_MAXIMIZE);
         }
     }
