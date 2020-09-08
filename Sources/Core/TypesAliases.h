@@ -1,6 +1,8 @@
 #pragma once
 #include "PicturaPCH.h"
 
+
+#pragma warning(disable : 4311 4302)
 using String = std::string;
 using WideString = std::wstring;
 
@@ -88,6 +90,7 @@ namespace Pictura::Types
 		uint32 id = reinterpret_cast<uint32>(obj);
 		return id;
 	}
+	#pragma warning(default : 4311 4302)
 
 	template <typename E>
 	constexpr typename std::underlying_type<E>::type ToUnderlying(E e) noexcept {

@@ -12,11 +12,10 @@ using namespace Pictura::Debug;
 
 namespace Pictura::UI
 {
+	enum class WindowState { Normal = 0, Minimized = 1, Maximized = 2, Fullscreen = 3 };
+	
 	class NullWindow
 	{
-	public:
-		enum class WindowState {Normal = 0, Minimized = 1, Maximized = 2, Fullscreen = 3};
-
 	public:
 		virtual ~NullWindow() { }
 
@@ -30,9 +29,13 @@ namespace Pictura::UI
 		virtual void Update() = 0;
 
 	protected:
+		virtual void SetFullscreen(bool value) = 0;
+
+	protected:
 		virtual void OnTitleChanged(const String& newValue) = 0;
 		virtual void OnPositionChanged(const Maths::Vector2& newValue) = 0;
 		virtual void OnSizeChanged(const Maths::Vector2& newValue) = 0;
+		virtual void OnStateChanged(const WindowState& newValue) = 0;
 
 	public:
 		void* OwnerPtr = nullptr;
@@ -47,14 +50,14 @@ namespace Pictura::UI
 		event(PositionEventArgs, PositionChanging);
 		event(SizeEventArgs, Resized);
 		event(CancelEventArgs, Closing);
-		event(EventArgs, Shown);
 		event(EventArgs, StateChanged);
+		event(EventArgs, Shown);
 		
 	public:
-		WindowState WindowState = WindowState::Normal;
 		Property<bool> Topmost = false;
 		Property<bool> Resizable = true;
 		Property<bool> Decorated = true;
+		Property<WindowState> WindowState = { WindowState::Normal, this, &NullWindow::OnStateChanged };
 
 		Property<String> Title = { "Untitled Window", this, &NullWindow::OnTitleChanged };
 

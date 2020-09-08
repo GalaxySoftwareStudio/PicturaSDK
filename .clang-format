@@ -1,0 +1,20 @@
+BasedOnStyle: LLVM
+IndentWidth: 4
+ColumnLimit: 0
+---
+Language: Cpp
+NamespaceIndentation: All
+FixNamespaceComments: false
+BreakBeforeBraces: Allman
+AllowShortIfStatementsOnASingleLine: Always
+IndentCaseBlocks: false
+IndentCaseLabels: true
+
+SortIncludes: false
+SortUsingDeclarations: false
+
+SpaceAfterLogicalNot: false
+SpaceAfterTemplateKeyword: false
+SpaceBeforeAssignmentOperators: true
+SpaceBeforeCtorInitializerColon: true
+SpaceBeforeInheritanceColon: true

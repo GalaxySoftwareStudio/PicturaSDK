@@ -1,4 +1,5 @@
 #pragma once
+#pragma warning(disable : 4244) //Warning from xstring header
 #include <cstdio>
 #include <io.h>
 #include <fcntl.h>
@@ -34,8 +35,10 @@
 	#define	WIN32_LEAN_AND_MEAN
 	#define NO_STRICT
 	#include <Windows.h>
+	#include <shellapi.h>
 	#ifdef __cplusplus
 		#include <wrl.h>
 		using namespace Microsoft::WRL;
 	#endif
 #endif
+#pragma warning(default : 4244)

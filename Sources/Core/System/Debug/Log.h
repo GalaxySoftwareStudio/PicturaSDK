@@ -17,7 +17,7 @@ namespace Pictura::Debug
 		Log(String LogCategory) : m_LogCategory(LogCategory) { }
 		~Log() { }
 
-		enum class LogLevel { Off = 0, Fatal = 1, Error = 2, Warning = 3, Info = 4, Verbose = 5, All = 6 };
+		enum class LogLevel { Off = 0, Fatal = 1, Error = 2, Warning = 3, Info = 4, Success = 5, Verbose = 6, All = 7 };
 
 	public:
 		static Log& GetFrameworkLog()
@@ -32,9 +32,9 @@ namespace Pictura::Debug
 			return Types::MakeShared<Log>(LogCategory);
 		}
 
-
 		void Debug(String Message);	
 		void Info(String Message);
+		void Success(String Message);
 		void Warning(String Message);
 		void Error(String Message);
 		void Fatal(String Message);

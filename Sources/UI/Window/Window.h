@@ -8,7 +8,6 @@ namespace Pictura::UI
 	class Window
 	{
 	public:
-		enum class WindowState { Normal = 0, Minimized = 1, Maximized = 2, Fullscreen = 3 };
 
 	public:
 		Window();
