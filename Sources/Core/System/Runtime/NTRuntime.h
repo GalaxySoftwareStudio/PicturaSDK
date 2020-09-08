@@ -3,9 +3,9 @@
 
 namespace Pictura::Runtime
 {
-	class NTRuntime
-	{
-    public:
+    class NTRuntime
+    {
+      public:
         static String GetLastErrorAsString()
         {
             //Get the error message, if any.
@@ -15,7 +15,7 @@ namespace Pictura::Runtime
 
             LPSTR messageBuffer = nullptr;
             size_t size = FormatMessageA(FORMAT_MESSAGE_ALLOCATE_BUFFER | FORMAT_MESSAGE_FROM_SYSTEM | FORMAT_MESSAGE_IGNORE_INSERTS,
-                NULL, errorMessageID, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR)&messageBuffer, 0, NULL);
+                                         NULL, errorMessageID, MAKELANGID(LANG_NEUTRAL, SUBLANG_DEFAULT), (LPSTR)&messageBuffer, 0, NULL);
 
             std::string message(messageBuffer, size);
 
@@ -24,5 +24,11 @@ namespace Pictura::Runtime
 
             return message;
         }
-	};
+
+        static int NTMessageBox(HWND wndHwnd, LPCTSTR Message, LPCTSTR Title, UINT Type)
+        {
+            int msgBoxResult = MessageBox(wndHwnd, Message, Title, Type);
+            return msgBoxResult;
+        }
+    };
 }

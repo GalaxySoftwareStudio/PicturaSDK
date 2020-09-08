@@ -20,5 +20,8 @@ namespace Pictura::UI
         virtual void Hide();
         virtual void Close();
         virtual void Focus();
+        virtual void Update();
+
+        virtual MessageBoxResult MessageBox(WideString Message, WideString Title, MessageBoxIcon Icons, MessageBoxButtons Buttons);
     };
 } // namespace Pictura::UI

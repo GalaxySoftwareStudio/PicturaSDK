@@ -27,27 +27,16 @@ class DemoApplication : public Application
         MainWindow->StateChanged += EventHandler::Bind(&DemoApplication::MainWindow_StateChanged, this);
         MainWindow->Title = "MainWindow";
         MainWindow->Show();
-
-        Threading::Thread::Delay(2000);
-        MainWindow->WindowState = UI::WindowState::Fullscreen;
-        
-        Threading::Thread::Delay(2000);
-        MainWindow->WindowState = UI::WindowState::Normal;
-
-        GetApplicationLog().Success("WindowState chain state complete !");
     }
 
     void MainWindow_Closing(CancelEventArgs &e)
     {
-        String previousTitle = MainWindow->Title;
-        MainWindow->Title = "You are about to quit the application !";
-        if (MessageBox(NULL, L"Really quit?", L"My application", MB_OKCANCEL) == IDOK)
+        if (MainWindow->ShowMessageBox(L"Really quit?", L"You're about to quit the application", UI::MessageBoxIcon::Info, UI::MessageBoxButtons::OkCancel) == UI::MessageBoxResult::Ok)
         {
             Exit();
             return;
         }
 
-        MainWindow->Title = "MainWindow";
         e.Cancel = true;
     }
 
@@ -73,7 +62,7 @@ class DemoApplication : public Application
                 break;
         }
 
-        MainWindow->Title = "MainWindow [" + wndState + "]";
+        MainWindow->Title = "MainWindow [WindowState = " + wndState + "]";
     }
 
     void DemoApplication_ApplicationClose(EventArgs &e)

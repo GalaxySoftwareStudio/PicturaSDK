@@ -113,6 +113,16 @@ namespace Pictura::UI
 
                     break;
                 }
+                case WM_GETMINMAXINFO:
+                {
+                    MINMAXINFO *mmi = (MINMAXINFO *)lParam;
+                    mmi->ptMinTrackSize.x = (long)this->MinSize->X < 1 ? mmi->ptMinTrackSize.x : (long)this->MinSize->X;
+                    mmi->ptMinTrackSize.y = (long)this->MinSize->Y < 1 ? mmi->ptMinTrackSize.y : (long)this->MinSize->Y;
+                    mmi->ptMaxTrackSize.x = (long)this->MaxSize->X < 1 ? mmi->ptMaxTrackSize.x : (long)this->MaxSize->X;
+                    mmi->ptMaxTrackSize.y = (long)this->MaxSize->Y < 1 ? mmi->ptMaxTrackSize.y : (long)this->MaxSize->Y;
+
+                    break;
+                }
                 case WM_SIZE:
                 {
                     uint32 width = LOWORD(lParam);
@@ -367,6 +377,8 @@ namespace Pictura::UI
         virtual void Close();
         virtual void Focus();
         virtual void Update();
+
+        virtual MessageBoxResult ShowMessageBox(WideString Message, WideString Title, MessageBoxIcon Icons, MessageBoxButtons Buttons);
 
       private:
         MSG m_msgHandler = {0};

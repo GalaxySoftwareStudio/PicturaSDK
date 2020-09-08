@@ -68,6 +68,11 @@ namespace Pictura::UI
         throw NotImplementedException();
     }
 
+    MessageBoxResult NTWindow::ShowMessageBox(WideString Message, WideString Title, MessageBoxIcon Icons, MessageBoxButtons Buttons)
+    {
+        return CastTo<MessageBoxResult>(Runtime::NTRuntime::NTMessageBox(m_Handle, Message.c_str(), Title.c_str(), ((long)Icons | (long)Buttons)));
+    }
+
     void NTWindow::SetFullscreen(bool value)
     {
         int scrWidth = GetSystemMetrics(SM_CXSCREEN);
