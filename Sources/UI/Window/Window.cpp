@@ -3,30 +3,30 @@
 
 namespace Pictura::UI
 {
-	Window::Window()
-	{
-		m_wndThread = Types::MakeUnique<Threading::Thread>(&Window::CreateNativeWindow, this);
-		Threading::Thread::LockThread();
-	}
+    Window::Window()
+    {
+        m_wndThread = Types::MakeUnique<Threading::Thread>(&Window::CreateNativeWindow, this);
+        Threading::Thread::LockThread();
+    }
 
-	void Window::CreateNativeWindow()
-	{
+    Window::~Window()
+    {
+        delete m_WindowInstance->GraphicsContext;
+    }
+
+    void Window::CreateNativeWindow()
+    {
 #if defined(PLATFORM_WINDOWS)
-		m_WindowInstance = new NTWindow();
+        m_WindowInstance = new NTWindow();
 #elif defined(PLATFORM_LINUX)
-		m_WindowInstance = new X11Window();
+        m_WindowInstance = new X11Window();
 #elif defined(PLATFORM_MACOS)
-		m_WindowInstance = new CocoaWindow();
+        m_WindowInstance = new CocoaWindow();
 #endif
-		Threading::Thread::UnlockThread();
-		NullWindow::WindowList.insert(Pair<NativeHandleType, NullWindow*>(m_WindowInstance->GetHandle(), m_WindowInstance));
+        Threading::Thread::UnlockThread();
+        NullWindow::WindowList.insert(Pair<NativeHandleType, NullWindow *>(m_WindowInstance->GetHandle(), m_WindowInstance));
 
-		m_WindowInstance->OwnerPtr = this;
-		m_WindowInstance->Update();
-	}
-
-	Window::~Window()
-	{
-		
-	}
+        m_WindowInstance->OwnerPtr = this;
+        m_WindowInstance->Update();
+    }
 }

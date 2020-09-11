@@ -7,7 +7,7 @@ namespace Pictura::Graphics
     class GPUDevice
     {
     public:
-        GPUDevice();
-        ~GPUDevice();
+        GPUDevice() {}
+        ~GPUDevice() {}
     };
 } // namespace Pictura::Graphics

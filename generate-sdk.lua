@@ -32,16 +32,16 @@ print("Creating intermediate directory...")
 os.mkdir("./Intermediate")
 
 filter "system:windows"
-system "Windows"
-platforms {"Win64"}
+    system "Windows"
+    platforms {"Win64"}
 
 filter "system:linux"
-system "Linux"
-platforms {"Linux"}
+    system "Linux"
+    platforms {"Linux"}
 
 filter "system:macosx"
-system "macosx"
-platforms {"MacOS"}
+    system "macosx"
+    platforms {"MacOS"}
 
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
@@ -69,6 +69,8 @@ project "PicturaFramework"
     defines {"_CRT_SECURE_NO_WARNINGS"}
 
     includedirs {"./Sources"}
+
+    links {"vulkan-1"}
 
     filter "system:windows"
         system "Windows"

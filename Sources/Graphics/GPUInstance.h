@@ -7,8 +7,8 @@ namespace Pictura::Graphics
     class GPUInstance
     {
     public:
-        GPUInstance();
-        ~GPUInstance();
+        GPUInstance() {}
+        ~GPUInstance() {}
 
     public:
         virtual void InitInstance() = 0;

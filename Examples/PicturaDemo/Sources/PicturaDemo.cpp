@@ -3,10 +3,11 @@
 
 class DemoApplication : public Application
 {
-  public:
+public:
     UI::Window MainWindow;
+    UI::Window AnotherWindow;
 
-  public:
+public:
     DemoApplication()
     {
         Log::SetLogLevel(Log::LogLevel::All);
@@ -27,6 +28,8 @@ class DemoApplication : public Application
         MainWindow->StateChanged += EventHandler::Bind(&DemoApplication::MainWindow_StateChanged, this);
         MainWindow->Title = "MainWindow";
         MainWindow->Show();
+
+        AnotherWindow->Show();
     }
 
     void MainWindow_Closing(CancelEventArgs &e)

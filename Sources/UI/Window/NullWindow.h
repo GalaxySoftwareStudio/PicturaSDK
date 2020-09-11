@@ -110,12 +110,12 @@ namespace Pictura::UI
         virtual void OnCanCloseWindowChanged(const bool &newValue) = 0;
 
     public:
+        Graphics::GPUContext *GraphicsContext = nullptr;
         void *OwnerPtr = nullptr;
         NativeHandleType &GetHandle() { return m_Handle; }
         static inline Map<NativeHandleType, UI::NullWindow *> WindowList = {};
 
     protected:
-        Graphics::GPUContext *GraphicsContext = nullptr;
         NativeHandleType m_Handle = nullptr;
         bool isActive = false;
 

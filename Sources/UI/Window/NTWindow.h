@@ -299,6 +299,8 @@ namespace Pictura::UI
             {
                 throw RuntimeException("Failed to create a Win32 window !");
             }
+
+            SetupContext();
         }
 
     protected:

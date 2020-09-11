@@ -21,4 +21,9 @@
 //Pictura::UI
 #include "UI/Window/Window.h"
 
+//Pictura::Graphics
+#include "Graphics/GPUContext.h"
+#include "Graphics/GPUDevice.h"
+#include "Graphics/GPUInstance.h"
+
 using namespace Pictura;
