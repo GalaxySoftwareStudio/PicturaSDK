@@ -1,7 +1,6 @@
 #pragma once
 #include "PicturaPCH.h"
 
-
 #pragma warning(disable : 4311 4302)
 using String = std::string;
 using WideString = std::wstring;

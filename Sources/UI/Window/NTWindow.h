@@ -6,11 +6,11 @@ namespace Pictura::UI
 {
     class NTWindow : public NullWindow
     {
-      public:
+    public:
         NTWindow();
         ~NTWindow();
 
-      private:
+    private:
         RECT GetWindowBorderRect()
         {
             WINDOWINFO WindowInfo = {0};
@@ -219,6 +219,12 @@ namespace Pictura::UI
             return 0;
         }
 
+        void SetupContext()
+        {
+            GraphicsContext = new Graphics::Vulkan::VKContext();
+            GraphicsContext->CreateContext();
+        }
+
         void SetupWindow()
         {
             String ID = Types::ToString(Types::GetObjectId(this));
@@ -235,7 +241,7 @@ namespace Pictura::UI
             wndClass.lpfnWndProc = &NTWindow::MessageRouter;
             wndClass.cbClsExtra = 0;
             wndClass.cbWndExtra = 0;
-            wndClass.hInstance = GetModuleHandle(NULL);
+            wndClass.hInstance = (HINSTANCE)GetModuleHandle(NULL);
             wndClass.hIcon = LoadIcon(NULL, IDI_APPLICATION);
             wndClass.hCursor = LoadCursor(NULL, IDC_ARROW);
             wndClass.hbrBackground = (HBRUSH)GetStockObject(DKGRAY_BRUSH);
@@ -295,7 +301,7 @@ namespace Pictura::UI
             }
         }
 
-      protected:
+    protected:
         virtual void OnTitleChanged(const String &newValue)
         {
             SetWindowText(m_Handle, WideString(newValue.begin(), newValue.end()).c_str());
@@ -383,10 +389,10 @@ namespace Pictura::UI
             SetWindowLong(m_Handle, GWL_STYLE, newValue ? GetWindowLong(m_Handle, GWL_STYLE) | WS_MAXIMIZEBOX : GetWindowLong(m_Handle, GWL_STYLE) & ~WS_MAXIMIZEBOX);
         }
 
-      protected:
+    protected:
         virtual void SetFullscreen(bool value);
 
-      public:
+    public:
         virtual void Show();
         virtual void Hide();
         virtual void Close();
@@ -395,7 +401,7 @@ namespace Pictura::UI
 
         virtual MessageBoxResult ShowMessageBox(WideString Message, WideString Title, MessageBoxIcon Icons, MessageBoxButtons Buttons);
 
-      private:
+    private:
         MSG m_msgHandler = {0};
     }; // namespace Pictura::UI
 } // namespace Pictura::UI

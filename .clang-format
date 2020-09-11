@@ -3,12 +3,14 @@ IndentWidth: 4
 ColumnLimit: 0
 ---
 Language: Cpp
+AccessModifierOffset: -4
 NamespaceIndentation: All
 FixNamespaceComments: false
 BreakBeforeBraces: Allman
 AllowShortIfStatementsOnASingleLine: Always
 IndentCaseBlocks: false
 IndentCaseLabels: true
+IndentPPDirectives: BeforeHash
 
 SortIncludes: false
 SortUsingDeclarations: false

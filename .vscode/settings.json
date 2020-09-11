@@ -3,7 +3,8 @@
         "objdir",
         "outputdir",
         "firstToUpper",
-        "outputDirName"
+        "outputDirName",
+        "sleep"
     ],
     "files.associations": {
         "algorithm": "cpp",
@@ -68,5 +69,12 @@
         "xtree": "cpp",
         "xutility": "cpp"
     },
-    "cmake.configureOnOpen": false
+    "cmake.configureOnOpen": false,
+    "Lua.diagnostics.disable": [
+        "undefined-global",
+        "undefined-global",
+        "undefined-global",
+        "empty-block",
+        "trailing-space"
+    ]
 }

@@ -7,6 +7,7 @@
 #include "Core/System/Debug/Log.h"
 #include "Core/Exceptions/Exceptions.h"
 #include "Core/System/Property.h"
+#include "Graphics/VulkanRenderer/VKContext.h"
 
 using namespace Pictura::Debug;
 
@@ -55,10 +56,10 @@ namespace Pictura::UI
 
     class NullWindow
     {
-      public:
+    public:
         virtual ~NullWindow() {}
 
-      public:
+    public:
         String WindowStateToString(WindowState State)
         {
             String wndState = "UnknownState";
@@ -84,7 +85,7 @@ namespace Pictura::UI
             return wndState;
         }
 
-      public:
+    public:
         virtual void Show() = 0;
         virtual void Hide() = 0;
 
@@ -95,10 +96,10 @@ namespace Pictura::UI
 
         virtual MessageBoxResult ShowMessageBox(WideString Message, WideString Title, MessageBoxIcon Icons, MessageBoxButtons Buttons) = 0;
 
-      protected:
+    protected:
         virtual void SetFullscreen(bool value) = 0;
 
-      protected:
+    protected:
         virtual void OnTitleChanged(const String &newValue) = 0;
         virtual void OnPositionChanged(const Maths::Vector2 &newValue) = 0;
         virtual void OnSizeChanged(const Maths::Vector2 &newValue) = 0;
@@ -108,23 +109,24 @@ namespace Pictura::UI
         virtual void OnCanMaximizeChanged(const bool &newValue) = 0;
         virtual void OnCanCloseWindowChanged(const bool &newValue) = 0;
 
-      public:
+    public:
         void *OwnerPtr = nullptr;
         NativeHandleType &GetHandle() { return m_Handle; }
         static inline Map<NativeHandleType, UI::NullWindow *> WindowList = {};
 
-      protected:
+    protected:
+        Graphics::GPUContext *GraphicsContext = nullptr;
         NativeHandleType m_Handle = nullptr;
         bool isActive = false;
 
-      public:
+    public:
         event(PositionEventArgs, PositionChanging);
         event(SizeEventArgs, Resized);
         event(CancelEventArgs, Closing);
         event(EventArgs, StateChanged);
         event(EventArgs, Shown);
 
-      public:
+    public:
         Property<bool> Topmost = false;
         Property<bool> Decorated = true;
         Property<bool> Resizable = {true, this, &NullWindow::OnResizableChanged};

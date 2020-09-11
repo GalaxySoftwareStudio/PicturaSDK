@@ -32,13 +32,13 @@
 #include "Core/PlatformMacro.h"
 
 #ifdef PLATFORM_WINDOWS
-	#define	WIN32_LEAN_AND_MEAN
-	#define NO_STRICT
-	#include <Windows.h>
-	#include <shellapi.h>
-	#ifdef __cplusplus
-		#include <wrl.h>
-		using namespace Microsoft::WRL;
-	#endif
+    #define WIN32_LEAN_AND_MEAN
+    #define NO_STRICT
+    #include <Windows.h>
+    #include <shellapi.h>
+    #ifdef __cplusplus
+        #include <wrl.h>
+using namespace Microsoft::WRL;
+    #endif
 #endif
 #pragma warning(default : 4244)
