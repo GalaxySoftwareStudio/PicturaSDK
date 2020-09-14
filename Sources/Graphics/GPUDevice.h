@@ -8,6 +8,6 @@ namespace Pictura::Graphics
     {
     public:
         GPUDevice() {}
-        ~GPUDevice() {}
+        virtual ~GPUDevice() {}
     };
 } // namespace Pictura::Graphics

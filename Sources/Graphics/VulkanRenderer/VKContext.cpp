@@ -9,6 +9,7 @@ namespace Pictura::Graphics::Vulkan
 
     VKContext::~VKContext()
     {
+        this->DestroyContext();
         Debug::Log::GetFrameworkLog().Info("Vulkan context [@" + Types::ToString(this) + "] destroyed !");
     }
 

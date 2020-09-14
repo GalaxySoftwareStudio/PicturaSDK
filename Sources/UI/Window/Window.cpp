@@ -11,7 +11,7 @@ namespace Pictura::UI
 
     Window::~Window()
     {
-        delete m_WindowInstance->GraphicsContext;
+        
     }
 
     void Window::CreateNativeWindow()

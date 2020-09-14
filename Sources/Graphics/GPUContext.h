@@ -8,7 +8,7 @@ namespace Pictura::Graphics
     {
     public:
         GPUContext() {}
-        ~GPUContext() {}
+        virtual ~GPUContext() {}
 
     public:
         virtual bool CreateContext() = 0;

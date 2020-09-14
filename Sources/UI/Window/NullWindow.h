@@ -57,7 +57,10 @@ namespace Pictura::UI
     class NullWindow
     {
     public:
-        virtual ~NullWindow() {}
+        virtual ~NullWindow()
+        {
+            delete GraphicsContext;
+        }
 
     public:
         String WindowStateToString(WindowState State)

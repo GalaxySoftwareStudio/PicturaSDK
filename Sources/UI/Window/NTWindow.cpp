@@ -14,13 +14,13 @@ namespace Pictura::UI
 {
     NTWindow::NTWindow()
     {
-        Debug::Log::GetFrameworkLog().Info("Creating Win32 Window...");
+        Debug::Log::GetFrameworkLog().Debug("Creating Win32 Window...");
         SetupWindow();
     }
 
     NTWindow::~NTWindow()
     {
-        Debug::Log::GetFrameworkLog().Info("Destroying Win32 Window...");
+        Debug::Log::GetFrameworkLog().Debug("Destroying Win32 Window...");
         isActive = false;
     }
 
