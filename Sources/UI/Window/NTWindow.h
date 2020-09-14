@@ -223,6 +223,7 @@ namespace Pictura::UI
         {
             GraphicsContext = new Graphics::Vulkan::VKContext();
             GraphicsContext->CreateContext();
+            GraphicsContext->InitSurface(m_Handle);
         }
 
         void SetupWindow()

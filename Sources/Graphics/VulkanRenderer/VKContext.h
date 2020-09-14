@@ -15,6 +15,8 @@ namespace Pictura::Graphics::Vulkan
         virtual bool CreateContext();
         virtual void DestroyContext();
 
+        virtual void InitSurface(Handle WindowHandle);
+
         virtual void PrintDebugInformations();
 
     private:

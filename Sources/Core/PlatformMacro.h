@@ -6,13 +6,19 @@
 #ifdef _WIN32
     #ifdef _WIN64
         #define PLATFORM_WINDOWS
-        #define VK_USE_PLATFORM_WIN32_KHR
         #ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
             #define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
         #endif
+
+        //Vulkan specific macro
+        #define VK_USE_PLATFORM_WIN32_KHR
+        #define VK_MODULE_HANDLE GetModuleHandle(NULL)
+        #define VK_SURFACE_EXTENSION_NAME VK_KHR_WIN32_SURFACE_EXTENSION_NAME
+        #define VkSurfaceCreateInfoKHR VkWin32SurfaceCreateInfoKHR
+        #define vkCreateSurfaceKHR vkCreateWin32SurfaceKHR
     #else
-        #error "x86 Builds are not supported by Pictura!"
-#endif
+        #error "32-bits builds are not supported by Pictura !"
+    #endif
 
 #elif defined(__APPLE__) || defined(__MACH__)
     #include <TargetConditionals.h>
@@ -52,6 +58,14 @@
     #define ENABLE_ASSERTS
 #else
     #define CORE_DEBUGBREAK()
+#endif
+
+#if !defined(DEFINE_NON_DISPATCHABLE_HANDLE)
+    #if defined(__LP64__) || defined(_WIN64) || (defined(__x86_64__) && !defined(__ILP32__)) || defined(_M_X64) || defined(__ia64) || defined(_M_IA64) || defined(__aarch64__) || defined(__powerpc64__)
+        #define DEFINE_NON_DISPATCHABLE_HANDLE(object) typedef struct object##_T *object;
+    #else
+        #define DEFINE_NON_DISPATCHABLE_HANDLE(object) typedef uint64_t object;
+    #endif
 #endif
 
 #define VK_ENABLE_BETA_EXTENSIONS

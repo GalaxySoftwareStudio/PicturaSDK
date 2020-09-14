@@ -36,6 +36,8 @@ using Mutex = std::mutex;
 template <typename T>
 using Atomic = std::atomic<T>;
 
+DEFINE_NON_DISPATCHABLE_HANDLE(ComplexHandle)
+typedef void *Handle;
 typedef unsigned char uint8;
 typedef unsigned short uint16;
 typedef unsigned int uint32;

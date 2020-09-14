@@ -1,26 +1,8 @@
 {
-	// Place your SDK workspace snippets here. Each snippet is defined under a snippet name and has a scope, prefix, body and 
-	// description. Add comma separated ids of the languages where the snippet is applicable in the scope field. If scope 
-	// is left empty or omitted, the snippet gets applied to all languages. The prefix is what is 
-	// used to trigger the snippet and the body will be expanded and inserted. Possible variables are: 
-	// $1, $2 for tab stops, $0 for the final cursor position, and ${1:label}, ${2:another} for placeholders. 
-	// Placeholders with the same ids are connected.
-	// Example:
-	// "Print to console": {
-	// 	"scope": "javascript,typescript",
-	// 	"prefix": "log",
-	// 	"body": [
-	// 		"console.log('$1');",
-	// 		"$2"
-	// 	],
-	// 	"description": "Log output to console"
-	// }
 	"Debug - Framework log": {
 		"scope": "cpp",
 		"prefix": "LogDebug",
-		"body": [
-			"Debug::Log::GetFrameworkLog().Debug(\"${1:message}\");",
-		],
+		"body": ["Debug::Log::GetFrameworkLog().Debug(\"${1:message}\");"],
 		"description": "Send a debug message to framework log channel"
 	},
 
@@ -36,5 +18,21 @@
 		"prefix": "CastTo",
 		"body": "CastTo<${1:targetType}>(${2:data})",
 		"description": "Static cast a data to a target type if the conversion is possible"
+	},
+
+	"Init engine header": {
+		"scope": "cpp",
+		"prefix": "InitEngineHeader",
+		"body": [
+			"#pragma once",
+			"#include \"Core/CoreFramework.h\"",
+			"#include \"Core/Exceptions/Exceptions.h\"",
+			"",
+			"namespace Pictura::${1:Subspace}",
+			"{",
+			"\t$0",
+			"}"
+		],
+		"description": "Include minimal framework headers"
 	}
 }

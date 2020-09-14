@@ -45,6 +45,22 @@ namespace Pictura::Graphics::Vulkan
         delete VulkanInstance;
     }
 
+    void VKContext::InitSurface(Handle WindowHandle)
+    {
+        VkSurfaceCreateInfoKHR surfaceInfo{VK_STRUCTURE_TYPE_WIN32_SURFACE_CREATE_INFO_KHR, nullptr, 0, VK_MODULE_HANDLE, WindowHandle};
+        VkSurfaceKHR surface;
+
+        VkResult result = vkCreateSurfaceKHR(VulkanInstance->GetVulkanInstance(), &surfaceInfo, nullptr, &surface);
+
+        if (result != VK_SUCCESS)
+        {
+            throw Exceptions::GPUException("Vulkan surface creation failed !");
+            return;
+        }
+
+        this->GPUSurface = (ComplexHandle)surface;
+    }
+
     void VKContext::PrintDebugInformations()
     {
         Debug::Log::GetFrameworkLog().Debug("\t - API Version : " + DefaultPhysicalDevice->GetApiVersion().toString());

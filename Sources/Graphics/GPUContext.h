@@ -14,9 +14,12 @@ namespace Pictura::Graphics
         virtual bool CreateContext() = 0;
         virtual void DestroyContext() = 0;
 
+        virtual void InitSurface(Handle WindowHandle) = 0;
+
         virtual void PrintDebugInformations() = 0;
 
     public:
+        ComplexHandle GPUSurface;
         bool VerboseContext = false;
     };
 } // namespace Pictura::Graphics
