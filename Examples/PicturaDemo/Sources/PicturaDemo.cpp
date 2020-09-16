@@ -29,7 +29,7 @@ public:
         MainWindow->Title = "MainWindow";
         MainWindow->Show();
 
-        AnotherWindow->Show();
+        //AnotherWindow->Show();
     }
 
     void MainWindow_Closing(CancelEventArgs &e)

@@ -76,5 +76,6 @@
         "undefined-global",
         "empty-block",
         "trailing-space"
-    ]
+    ],
+    "C_Cpp.errorSquiggles": "Enabled"
 }

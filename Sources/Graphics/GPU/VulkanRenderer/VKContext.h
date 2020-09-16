@@ -2,6 +2,7 @@
 #include "Graphics/GPU/GPUContext.h"
 #include "VKInstance.h"
 #include "VKDevice.h"
+#include "VKSwapchain.h"
 
 namespace Pictura::Graphics::Vulkan
 {
@@ -12,32 +13,21 @@ namespace Pictura::Graphics::Vulkan
         ~VKContext();
 
     public:
-        virtual bool CreateContext();
+        virtual bool CreateContext(Handle windowHandle);
         virtual void DestroyContext();
 
         virtual void InitSurface(Handle WindowHandle);
+        virtual void CreateGraphicsPipeline();
 
         virtual void PrintDebugInformations();
 
-    private:
-        String toHumanSize(size_t size)
-        {
-            static const std::vector<std::string> SUFFIXES{{"B", "KB", "MB", "GB", "TB", "PB"}};
-            size_t suffixIndex = 0;
-            while (suffixIndex < SUFFIXES.size() - 1 && size > 1024)
-            {
-                size >>= 10;
-                ++suffixIndex;
-            }
-
-            std::stringstream buffer;
-            buffer << size << " " << SUFFIXES[suffixIndex];
-            return buffer.str();
-        }
+    public:
+        virtual void ClearSurface(Color ClearColor = Color::Black);
 
     public:
         VKInstance *VulkanInstance = nullptr;
-        VKDevice *DefaultPhysicalDevice;
+        VKSwapchain *VulkanSwapchain = nullptr;
+        VKDevice *DefaultPhysicalDevice = nullptr;
 
         Vector<VKDevice> PhysicalDevices = {};
     };

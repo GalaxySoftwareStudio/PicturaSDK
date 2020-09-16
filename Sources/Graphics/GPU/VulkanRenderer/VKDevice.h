@@ -49,7 +49,7 @@ namespace Pictura::Graphics::Vulkan
     {
     public:
         VKDevice() {}
-        VKDevice(vk::PhysicalDevice device) : m_PhysicalDevice(device)
+        VKDevice(vk::PhysicalDevice device, VkSurfaceKHR &surface) : m_PhysicalDevice(device), m_VulkanSurface(surface)
         {
             m_DeviceProperties = device.getProperties();
             m_DeviceFeatures = device.getFeatures();
@@ -61,20 +61,41 @@ namespace Pictura::Graphics::Vulkan
 
             m_apiVersion = m_DeviceProperties.apiVersion;
             m_driverVersion = m_DeviceProperties.driverVersion;
+
+            FindQueueFamilies();
+            CreateLogicalDevices();
+            CreateSemaphores();
         }
 
         ~VKDevice() {}
 
     public:
+        vk::Queue GraphicsQueue;
+        vk::Queue PresentationQueue;
+
+        vk::Semaphore ImageAvailablesSemaphore;
+        vk::Semaphore RenderingFinishedSemaphore;
+
+    public:
+        VkSurfaceKHR &GetVulkanSurface() { return m_VulkanSurface; }
         vk::PhysicalDevice &GetVulkanDevice() { return m_PhysicalDevice; }
         vk::PhysicalDeviceProperties &GetProperties() { return m_DeviceProperties; }
         vk::PhysicalDeviceLimits &GetDeviceLimits() { return m_PhysicalDeviceLimits; }
         vk::PhysicalDeviceFeatures &GetDeviceFeatures() { return m_DeviceFeatures; }
         vk::PhysicalDeviceMemoryProperties &GetMemoryProperties() { return m_DeviceMemoryProperties; }
 
+        vk::Device &GetLogicalDevice() { return m_LogicalDevice; }
+        uint32 GetGraphicsQueueIndex() { return m_GraphicsQueueFamily; }
+        uint32 GetPresentQueueIndex() { return m_PresentQueueFamily; }
+
         Version &GetApiVersion() { return m_apiVersion; }
         Version &GetDriverVersion() { return m_driverVersion; }
         String &GetName() { return m_DeviceName; }
+
+    private:
+        void FindQueueFamilies();
+        void CreateLogicalDevices();
+        void CreateSemaphores();
 
     private:
         Version m_apiVersion;
@@ -85,5 +106,12 @@ namespace Pictura::Graphics::Vulkan
         vk::PhysicalDeviceProperties m_DeviceProperties;
         vk::PhysicalDeviceFeatures m_DeviceFeatures;
         vk::PhysicalDeviceMemoryProperties m_DeviceMemoryProperties;
+
+        vk::Device m_LogicalDevice;
+
+        uint32 m_GraphicsQueueFamily;
+        uint32 m_PresentQueueFamily;
+
+        VkSurfaceKHR m_VulkanSurface = nullptr;
     };
 } // namespace Pictura::Graphics::Vulkan

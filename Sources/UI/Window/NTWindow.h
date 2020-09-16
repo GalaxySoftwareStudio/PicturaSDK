@@ -201,12 +201,16 @@ namespace Pictura::UI
                 }
                 case WM_QUIT:
                 {
-                    Log::GetFrameworkLog().Info("WM_QUIT from Window");
                     break;
                 }
                 case WM_DESTROY:
                 {
                     break;
+                }
+                case WM_PAINT:
+                {
+                    ValidateRect(m_Handle, NULL);
+                    Log::GetFrameworkLog().Debug("Paint message [" + (String)Title + "]");
                 }
                 default:
                 {
@@ -221,8 +225,7 @@ namespace Pictura::UI
         void SetupContext()
         {
             GraphicsContext = new Graphics::Vulkan::VKContext();
-            GraphicsContext->CreateContext();
-            GraphicsContext->InitSurface(m_Handle);
+            GraphicsContext->CreateContext(m_Handle);
         }
 
         void SetupWindow()

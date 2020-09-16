@@ -115,7 +115,7 @@ namespace Pictura::UI
         static inline Map<NativeHandleType, UI::NullWindow *> WindowList = {};
 
     protected:
-        NativeHandleType m_Handle = nullptr;
+        Handle m_Handle = nullptr;
         bool isActive = false;
 
     public:

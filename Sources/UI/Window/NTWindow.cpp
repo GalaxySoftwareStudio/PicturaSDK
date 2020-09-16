@@ -49,6 +49,14 @@ namespace Pictura::UI
             {
                 TranslateMessage(&m_msgHandler);
                 DispatchMessage(&m_msgHandler);
+
+                if (m_msgHandler.message == WM_QUIT) {
+                    isActive = false;
+                }
+            }
+
+            if (!IsIconic(m_Handle)) {
+                
             }
         }
     }
