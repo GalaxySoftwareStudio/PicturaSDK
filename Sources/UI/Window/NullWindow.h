@@ -1,13 +1,9 @@
 #pragma once
-#include "Core/CoreFramework.h"
-#include "Core/Threading/Thread.h"
-#include "Core/Events/Event.h"
+
+#include "FrameworkMinimal.h"
 #include "Core/Events/EventArgs/CancelEventArgs.h"
 #include "WindowEventArgs.h"
-#include "Core/System/Debug/Log.h"
-#include "Core/Exceptions/Exceptions.h"
-#include "Core/System/Property.h"
-#include "Graphics/VulkanRenderer/VKContext.h"
+#include "Graphics/GPU/VulkanRenderer/VKContext.h"
 
 using namespace Pictura::Debug;
 
@@ -146,5 +142,7 @@ namespace Pictura::UI
         Property<Maths::Vector2> Size = {Maths::Vector2(850, 450), this, &NullWindow::OnSizeChanged};
         Property<Maths::Vector2> MinSize = Maths::Vector2(425, 225);
         Property<Maths::Vector2> MaxSize = Maths::Vector2();
+
+        Property<Graphics::Color> BackgroundColor = Graphics::Color::White;
     };
 }

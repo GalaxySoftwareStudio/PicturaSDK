@@ -1,5 +1,5 @@
 #pragma once
-#include "Graphics/GPUInstance.h"
+#include "Graphics/GPU/GPUInstance.h"
 #include "vulkan/vulkan.hpp"
 #include "vulkan/vma.h"
 

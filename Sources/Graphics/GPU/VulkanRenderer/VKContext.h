@@ -1,5 +1,5 @@
 #pragma once
-#include "Graphics/GPUContext.h"
+#include "Graphics/GPU/GPUContext.h"
 #include "VKInstance.h"
 #include "VKDevice.h"
 

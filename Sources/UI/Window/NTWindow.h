@@ -1,5 +1,4 @@
 #pragma once
-#include "Core/System/Runtime/Runtime.h"
 #include "NullWindow.h"
 
 namespace Pictura::UI
