@@ -22,7 +22,7 @@ namespace Pictura::Graphics::Vulkan
 
             for (auto &&physDevices : VulkanInstance->GetVulkanInstance().enumeratePhysicalDevices())
             {
-                PhysicalDevices.push_back(VKDevice(physDevices, CastTo<VkSurfaceKHR &>(GPUSurface)));
+                PhysicalDevices.push_back(VKDevice(physDevices, ReinterpretCastTo<VkSurfaceKHR>(GPUSurface)));
             }
 
             DefaultPhysicalDevice = &PhysicalDevices[0];
@@ -75,6 +75,7 @@ namespace Pictura::Graphics::Vulkan
         vk::PipelineShaderStageCreateInfo shaderStages[] = {vertStageCreateInfo, fragStageCreateInfo};
 
         //TODO: Fixed functions
+        //...
     }
 
     //TODO: Move this to VKShader
@@ -102,7 +103,7 @@ namespace Pictura::Graphics::Vulkan
         for (size_t i = 0; i < DefaultPhysicalDevice->GetMemoryProperties().memoryHeapCount; ++i)
         {
             const auto &heap = DefaultPhysicalDevice->GetMemoryProperties().memoryHeaps[i];
-            Debug::Log::GetFrameworkLog().Debug("\t\tHeap[" + Types::ToString(i) + "] : Flags" + vk::to_string(heap.flags) + " (" + Types::Numbers::ToHumanSize(heap.size) + ")");
+            Debug::Log::GetFrameworkLog().Debug("\t\tHeap[" + Types::ToString(i) + "] : Flags" + vk::to_string(heap.flags) + " (" + Types::ToString(heap.size) + ")");
         }
 
         Debug::Log::GetFrameworkLog().Debug("\t - Memory Types : " + Types::ToString(DefaultPhysicalDevice->GetMemoryProperties().memoryTypeCount));

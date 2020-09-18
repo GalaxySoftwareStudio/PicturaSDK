@@ -52,16 +52,16 @@ auto GetTupleValue(std::tuple<A...> _tuple)
     return std::get<T>(_tuple);
 }
 
-template<typename T, typename O>
+template<typename T, class O>
 constexpr T CastTo(O o) noexcept
 {
     return static_cast<T>(o);
 }
 
 template<typename T>
-constexpr T AddressOf(T object) noexcept
+constexpr T* AddressOf(T object) noexcept
 {
-    return reinterpret_cast<T *>(&const_cast<char &>(reinterpret_cast<const volatile char &>(object)))
+    return reinterpret_cast<T *>(&const_cast<char &>(reinterpret_cast<const volatile char &>(object)));
 }
 
 template<typename T, typename O>
@@ -139,21 +139,6 @@ namespace Pictura::Types
         bool IsBetween(T value, T min, T max)
         {
             return (value >= min) && (value <= max);
-        }
-
-        String ToHumanSize(size_t size)
-        {
-            static const std::vector<std::string> SUFFIXES{{"B", "KB", "MB", "GB", "TB", "PB"}};
-            size_t suffixIndex = 0;
-            while (suffixIndex < SUFFIXES.size() - 1 && size > 1024)
-            {
-                size >>= 10;
-                ++suffixIndex;
-            }
-
-            std::stringstream buffer;
-            buffer << size << " " << SUFFIXES[suffixIndex];
-            return buffer.str();
         }
     }
 

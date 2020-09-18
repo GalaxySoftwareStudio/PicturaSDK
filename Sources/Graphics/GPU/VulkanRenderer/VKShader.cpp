@@ -33,19 +33,12 @@ namespace Pictura::Graphics::Vulkan
     bool VKShader::PreprocessShader(Vector<char> RawShaderCode, Vector<char> &PreprocessedShaderCode)
     {
         // Prepare compiler objects and compiler options
-        shaderc::Compiler compiler;
-        shaderc::CompileOptions compileOptions;
 
         // Preprocess shader
         if (RawShaderCode.size() > 1)
         {
-            shaderc::PreprocessedSourceCompilationResult result = compiler.PreprocessGlsl(String(RawShaderCode.begin(), RawShaderCode.end()), shaderc_shader_kind::shaderc_glsl_infer_from_source, ("PrecompiledShader_" + Types::ToString(AddressOf(PreprocessedShaderCode))).c_str(), compileOptions);
-            if (result.GetCompilationStatus() != shaderc_compilation_status_success)
-            {
-                throw Exceptions::RuntimeException(ShaderName + " preprocessing failed !\n" + result.GetErrorMessage());
-                return false;
-            }
-
+            //TODO: Complete preprocessing code
+            Vector<char> result;
             PreprocessedShaderCode = {result.begin(), result.end()};
         }
         else
@@ -59,20 +52,12 @@ namespace Pictura::Graphics::Vulkan
 
     bool VKShader::CompileShader(Vector<char> RawShaderCode, Vector<char> &CompiledSpvShaderCode)
     {
-        shaderc::Compiler compiler;
-        shaderc::CompileOptions compileOptions;
-
         Vector<char> preprocessedCode;
         bool preprocessResult = PreprocessShader(RawShaders->FragmentShader, preprocessedCode);
 
         if (preprocessResult)
         {
-            shaderc::SpvCompilationResult spvModule = compiler.CompileGlslToSpv(String(preprocessedCode.begin(), preprocessedCode.end()), shaderc_shader_kind::shaderc_glsl_infer_from_source, ("CompiledShader_" + Types::ToString(AddressOf(preprocessedCode))).c_str(), compileOptions);
-            if (spvModule.GetCompilationStatus() != shaderc_compilation_status::shaderc_compilation_status_success)
-            {
-                throw Exceptions::RuntimeException(ShaderName + " compilation failed !\n" + spvModule.GetErrorMessage());
-                return false;
-            }
+            //TODO: Complete compilation code
 
             Debug::Log::GetFrameworkLog().Success(ShaderName + " compiled successfully !");
         }

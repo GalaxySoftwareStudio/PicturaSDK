@@ -83,9 +83,11 @@
 	"todo-tree.tree.showCountsInTree": true,
 	"todo-tree.tree.flat": true,
 	"todo-tree.general.statusBar": "current file",
-	"todo-tree.general.tags": [
-		"BUG",
-		"FIXME",
-		"TODO"
-	]
+	"todo-tree.general.tags": ["BUG", "FIXME", "TODO"],
+	"[lua]": {
+		"editor.defaultFormatter": "Koihik.vscode-lua-format",
+		"editor.formatOnSave": false,
+		"editor.formatOnPaste": false,
+		"editor.formatOnType": false
+	}
 }

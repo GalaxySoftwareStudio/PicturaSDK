@@ -2,26 +2,45 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
+			"label": "Regenerate project files",
+			"type": "shell",
+			"windows": {
+				"command": "${workspaceFolder}/GenerateSolutionsFiles.cmd"
+			},
+			"linux": {
+				"command": "${workspaceFolder}/GenerateSolutionsFiles.sh"
+			},
+			"osx": {
+				"command": "${workspaceFolder}/GenerateSolutionsFiles.command"
+			},
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "dedicated",
+				"showReuseMessage": true,
+				"clear": true
+			},
+			"problemMatcher": []
+		},
+		{
 			"label": "Compile Pictura SDK - Debug",
 			"type": "shell",
 			"command": "C:\\Program Files (x86)\\Microsoft Visual Studio\\2019\\Community\\MSBuild\\Current\\Bin\\amd64\\msbuild.exe",
 			"args": [
-				// Ask msbuild to generate full paths for file names.
 				"/property:GenerateFullPaths=true",
 				"/t:build",
 				"/v:m",
-				// Do not generate summary otherwise it leads to duplicate errors in Problems panel
 				"/consoleloggerparameters:NoSummary"
 			],
-			"group": {
-				"kind": "build",
-				"isDefault": true
-			},
+			"group": "build",
 			"presentation": {
-				// Reveal the output only if unrecognized errors occur.
-				"reveal": "silent"
+				"reveal": "always",
+				"focus": true,
+				"clear": true,
+				"panel": "dedicated"
 			},
-			// Use the standard MS compiler pattern to detect errors, warnings and infos
 			"problemMatcher": "$msCompile"
 		},
 		{
@@ -37,7 +56,10 @@
 			],
 			"group": "build",
 			"presentation": {
-				"reveal": "silent"
+				"reveal": "always",
+				"focus": true,
+				"clear": true,
+				"panel": "dedicated"
 			},
 			"problemMatcher": "$msCompile"
 		}

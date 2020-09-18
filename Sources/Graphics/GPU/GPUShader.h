@@ -10,6 +10,7 @@ namespace Pictura::Graphics
         Fragment,
         Tessellation,
         Geometry,
+        Compute,
         RayGen,
         RayHit
     };

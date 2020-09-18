@@ -127,23 +127,24 @@ namespace Pictura::Graphics::Vulkan
 
     void VKSwapchain::CreateImageViews()
     {
-        try            
+        try
         {
             ImageViews.resize(SwapchainImages.size());
             for (size_t i = 0; i < SwapchainImages.size(); i++)
             {
                 vk::ImageViewCreateInfo createInfo({}, SwapchainImages[i], vk::ImageViewType::e2D, SwapchainImageFormat,
-                                                {vk::ComponentSwizzle::eIdentity,
+                                                   {vk::ComponentSwizzle::eIdentity,
                                                     vk::ComponentSwizzle::eIdentity,
                                                     vk::ComponentSwizzle::eIdentity,
-                                                    vk::ComponentSwizzle::eIdentity}, {vk::ImageAspectFlagBits::eColor, 0, 1, 0, 1});
+                                                    vk::ComponentSwizzle::eIdentity},
+                                                   {vk::ImageAspectFlagBits::eColor, 0, 1, 0, 1});
 
-                ImageViews = VulkanDevice->GetLogicalDevice().createImageView(createInfo);
+                ImageViews[i] = VulkanDevice->GetLogicalDevice().createImageView(createInfo);
             }
         }
-        catch(const std::exception& e)
+        catch (const std::exception &e)
         {
-            throw GPUException("Failed to create swapchain image views !\n" + String(e.what());
+            throw GPUException("Failed to create swapchain image views !\n" + String(e.what()));
         }
     }
 }

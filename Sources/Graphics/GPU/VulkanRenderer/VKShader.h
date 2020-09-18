@@ -1,6 +1,5 @@
 #pragma once
 #include "Graphics/GPU/GPUShader.h"
-#include "VulkanRenderer/vulkan/shaderc/shaderc.hpp"
 
 namespace Pictura::Graphics::Vulkan
 {

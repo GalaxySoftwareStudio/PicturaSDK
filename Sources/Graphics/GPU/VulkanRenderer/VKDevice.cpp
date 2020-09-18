@@ -72,7 +72,7 @@ namespace Pictura::Graphics::Vulkan
         VkDeviceCreateInfo deviceCreateInfo = {};
 
         deviceCreateInfo.sType = VK_STRUCTURE_TYPE_DEVICE_CREATE_INFO;
-        deviceCreateInfo.pQueueCreateInfos = &(CastTo<const VkDeviceQueueCreateInfo &>(queueCreateInfo));
+        deviceCreateInfo.pQueueCreateInfos = ReinterpretCastTo<const VkDeviceQueueCreateInfo *>(queueCreateInfo);
         deviceCreateInfo.queueCreateInfoCount = (m_GraphicsQueueFamily == m_PresentQueueFamily) ? 1 : 2;
         deviceCreateInfo.enabledExtensionCount = 1;
         deviceCreateInfo.ppEnabledExtensionNames = &deviceExtensions;

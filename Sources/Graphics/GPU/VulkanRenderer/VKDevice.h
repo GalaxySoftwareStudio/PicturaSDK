@@ -1,7 +1,7 @@
 #pragma once
 #include "Graphics/GPU/GPUDevice.h"
 #include "vulkan/vulkan.hpp"
-#include "vulkan/vma.h"
+#include "VulkanMemoryAllocator/vma.h"
 
 namespace Pictura::Graphics::Vulkan
 {
@@ -49,7 +49,7 @@ namespace Pictura::Graphics::Vulkan
     {
     public:
         VKDevice() {}
-        VKDevice(vk::PhysicalDevice device, VkSurfaceKHR &surface) : m_PhysicalDevice(device), m_VulkanSurface(surface)
+        VKDevice(vk::PhysicalDevice device, VkSurfaceKHR surface) : m_PhysicalDevice(device), m_VulkanSurface(surface)
         {
             m_DeviceProperties = device.getProperties();
             m_DeviceFeatures = device.getFeatures();
