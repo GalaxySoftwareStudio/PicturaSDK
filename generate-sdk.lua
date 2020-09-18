@@ -32,118 +32,125 @@ print("Creating intermediate directory...")
 os.mkdir("./Intermediate")
 
 filter "system:windows"
-    system "Windows"
-    platforms {"Win64"}
+system "Windows"
+platforms {"Win64"}
 
 filter "system:linux"
-    system "Linux"
-    platforms {"Linux"}
+system "Linux"
+platforms {"Linux"}
 
 filter "system:macosx"
-    system "macosx"
-    platforms {"MacOS"}
+system "macosx"
+platforms {"MacOS"}
 
 -- Include directories relative to root folder (solution directory)
 IncludeDir = {}
 
 -- Pictura SDK project --
 project "PicturaFramework"
-    location "Sources"
-    kind "StaticLib"
-    language "C++"
-    cppdialect "C++17"
-    staticruntime "on"
-    systemversion "latest"
+location "Sources"
+kind "StaticLib"
+language "C++"
+cppdialect "C++17"
+staticruntime "on"
+systemversion "latest"
 
-    targetname("Pictura-%{cfg.buildcfg}")
-    print("Target system : " .. outputDirName);
-    targetdir("Framework/" .. outputDirName .. "/")
-    objdir("Intermediate/%{prj.name}/" .. outputDirName .. "/")
-    libdirs {os.getenv("VULKAN_SDK") .. "/Lib"}
+targetname("Pictura-%{cfg.buildcfg}")
+print("Target system : " .. outputDirName);
+targetdir("Framework/" .. outputDirName .. "/")
+objdir("Intermediate/%{prj.name}/" .. outputDirName .. "/")
+libdirs {os.getenv("VULKAN_SDK") .. "/Lib"}
 
-    pchheader "PicturaPCH.h"
-    pchsource "Sources/PicturaPCH.cpp"
+pchheader "PicturaPCH.h"
+pchsource "Sources/PicturaPCH.cpp"
 
-    files {"./Sources/**.h", "./Sources/**.cpp"}
+files {"./Sources/**.h", "./Sources/**.cpp"}
 
-    defines {"_CRT_SECURE_NO_WARNINGS"}
+defines {"_CRT_SECURE_NO_WARNINGS"}
 
-    includedirs {"./Sources"}
+includedirs {"./Sources"}
 
-    links {"vulkan-1"}
+links {"vulkan-1"}
 
-    filter "system:windows"
-        system "Windows"
-        platforms {"Win64"}
+filter "system:windows"
+system "Windows"
+platforms {"Win64"}
 
-    filter "system:linux"
-        system "Linux"
-        platforms {"Linux"}
-        links {"pthread"}
-        buildoptions {"-pthread", "-lpthread"}
+filter "system:linux"
+system "Linux"
+platforms {"Linux"}
+links {"pthread"}
+buildoptions {"-pthread", "-lpthread"}
 
-    filter "system:macosx"
-        system "macosx"
-        platforms {"MacOS"}
-        links {"pthread"}
-        buildoptions {"-pthread", "-lpthread"}
+filter "system:macosx"
+system "macosx"
+platforms {"MacOS"}
+links {"pthread"}
+buildoptions {"-pthread", "-lpthread"}
 
-    filter "configurations:Debug"
-        defines "PICTURA_DEBUG"
-        runtime "Debug"
-        symbols "on"
+filter "configurations:Debug"
+defines "PICTURA_DEBUG"
+runtime "Debug"
+symbols "on"
 
-    filter "configurations:Release"
-        defines "PICTURA_RELEASE"
-        runtime "Release"
-        optimize "on"
+filter "configurations:Release"
+defines "PICTURA_RELEASE"
+runtime "Release"
+optimize "on"
 
 -- Pictura Demo project --
 project "PicturaDemo"
-    location "Examples/%{prj.name}/Sources"
-    kind "WindowedApp"
-    language "C++"
-    cppdialect "C++17"
-    staticruntime "on"
-    systemversion "latest"
+location "Examples/%{prj.name}/Sources"
+kind "WindowedApp"
+language "C++"
+cppdialect "C++17"
+staticruntime "on"
+systemversion "latest"
 
-    targetname("%{prj.name}-%{cfg.buildcfg}")
-    targetdir("Examples/%{prj.name}/Build/" .. outputDirName .. "/")
-    objdir("Examples/%{prj.name}/Intermediate/" .. outputDirName .. "/")
+targetname("%{prj.name}-%{cfg.buildcfg}")
+targetdir("Examples/%{prj.name}/Build/" .. outputDirName .. "/")
+objdir("Examples/%{prj.name}/Intermediate/" .. outputDirName .. "/")
 
-    files {
-        "./Examples/%{prj.name}/Sources/**.h",
-        "./Examples/%{prj.name}/Sources/**.cpp"
-    }
+files {
+    "./Examples/%{prj.name}/Sources/**.h",
+    "./Examples/%{prj.name}/Sources/**.cpp"
+}
 
-    includedirs {"./Sources"}
+includedirs {"./Sources"}
 
-    links {"PicturaFramework"}
+links {"PicturaFramework"}
 
-    filter "system:windows"
-        system "Windows"
-        platforms {"Win64"}
+postbuildcommands {
+    "{ECHO} Copying application ressources...",
+    "{MKDIR} %{cfg.buildtarget.abspath}/Ressources",
+    "{MKDIR} %{cfg.buildtarget.abspath}/Ressources/Shaders",
+    "{COPY} %{cfg.buildtarget.abspath}/../../Ressources/Shaders/ %{cfg.buildtarget.abspath}/Ressources/Shaders/"
+}
 
-    filter "system:linux"
-        system "Linux"
-        platforms {"Linux"}
-        links {"pthread"}
+filter "system:windows"
+system "Windows"
+platforms {"Win64"}
 
-    filter "system:macosx"
-        system "macosx"
-        platforms {"MacOS"}
-        links {"pthread"}
+filter "system:linux"
+system "Linux"
+platforms {"Linux"}
+links {"pthread"}
 
-    filter "configurations:Debug"
-        defines "APPLICATION_DEBUG"
-        runtime "Debug"
-        symbols "on"
-        optimize "off"
+filter "system:macosx"
+system "macosx"
+platforms {"MacOS"}
+links {"pthread"}
 
-    filter "configurations:Release"
-        defines "APPLICATION_RELEASE"
-        runtime "Release"
-        optimize "speed"
+filter "configurations:Debug"
+defines "APPLICATION_DEBUG"
+runtime "Debug"
+symbols "on"
+optimize "off"
 
-    -- Completion delay
-    sleep(1)
+filter "configurations:Release"
+defines "APPLICATION_RELEASE"
+runtime "Release"
+optimize "speed"
+
+-- Completion delay
+sleep(1)

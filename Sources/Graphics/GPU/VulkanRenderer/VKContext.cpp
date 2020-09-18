@@ -65,8 +65,31 @@ namespace Pictura::Graphics::Vulkan
 
     void VKContext::CreateGraphicsPipeline()
     {
-        //Create graphics pipeline
-        //Shader module
+        VKShader ExampleShader = VKShader("Ressources/Shaders/example", "ExampleShader");
+
+        vk::ShaderModule vertexShaderModule = CreateShaderModule(ExampleShader.CompiledShaders->FragmentShader);
+        vk::ShaderModule fragmentShaderModule = CreateShaderModule(ExampleShader.CompiledShaders->VertexShader);
+
+        vk::PipelineShaderStageCreateInfo vertStageCreateInfo({}, vk::ShaderStageFlagBits::eVertex, vertexShaderModule, "main");
+        vk::PipelineShaderStageCreateInfo fragStageCreateInfo({}, vk::ShaderStageFlagBits::eFragment, fragmentShaderModule, "main");
+        vk::PipelineShaderStageCreateInfo shaderStages[] = {vertStageCreateInfo, fragStageCreateInfo};
+
+        //TODO: Fixed functions
+    }
+
+    //TODO: Move this to VKShader
+    vk::ShaderModule VKContext::CreateShaderModule(const Vector<char> &code)
+    {
+        try
+        {
+            vk::ShaderModuleCreateInfo moduleCreateInfo({}, code.size(), ReinterpretCastTo<const uint32 *>(code.data()));
+            vk::ShaderModule shaderModule = DefaultPhysicalDevice->GetLogicalDevice().createShaderModule(moduleCreateInfo);
+            return shaderModule;
+        }
+        catch (const std::exception &e)
+        {
+            throw GPUException("Failed to create a vulkan shader module !\n" + String(e.what()));
+        }
     }
 
     void VKContext::PrintDebugInformations()
@@ -88,10 +111,5 @@ namespace Pictura::Graphics::Vulkan
             const auto &type = DefaultPhysicalDevice->GetMemoryProperties().memoryTypes[i];
             Debug::Log::GetFrameworkLog().Debug("\t\tType[" + Types::ToString(i) + "] : Flags" + vk::to_string(type.propertyFlags) + " heapIndex[" + Types::ToString(type.heapIndex) + "]");
         }
-    }
-
-    //Vulkan commands implementation
-    void VKContext::ClearSurface(Color ClearColor)
-    {
     }
 }

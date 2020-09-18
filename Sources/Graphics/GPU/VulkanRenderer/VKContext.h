@@ -3,6 +3,7 @@
 #include "VKInstance.h"
 #include "VKDevice.h"
 #include "VKSwapchain.h"
+#include "VKShader.h"
 
 namespace Pictura::Graphics::Vulkan
 {
@@ -21,8 +22,8 @@ namespace Pictura::Graphics::Vulkan
 
         virtual void PrintDebugInformations();
 
-    public:
-        virtual void ClearSurface(Color ClearColor = Color::Black);
+    private:
+        vk::ShaderModule CreateShaderModule(const Vector<char> &code);
 
     public:
         VKInstance *VulkanInstance = nullptr;

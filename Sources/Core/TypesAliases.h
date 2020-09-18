@@ -58,6 +58,12 @@ constexpr T CastTo(O o) noexcept
     return static_cast<T>(o);
 }
 
+template<typename T>
+constexpr T AddressOf(T object) noexcept
+{
+    return reinterpret_cast<T *>(&const_cast<char &>(reinterpret_cast<const volatile char &>(object)))
+}
+
 template<typename T, typename O>
 constexpr T DynamicCastTo(O o) noexcept
 {
