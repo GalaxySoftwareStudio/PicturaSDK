@@ -2,7 +2,7 @@
 	"version": "2.0.0",
 	"tasks": [
 		{
-			"label": "Regenerate project files",
+			"label": "Re-generate framework files",
 			"type": "shell",
 			"windows": {
 				"command": "${workspaceFolder}/GenerateSolutionsFiles.cmd"
@@ -22,6 +22,33 @@
 				"showReuseMessage": true,
 				"clear": true
 			},
+			"detail": "Update PicturaSDK solution files for host platform.",
+			"promptOnClose": true,
+			"problemMatcher": []
+		},
+		{
+			"label": "Clean framework files",
+			"type": "shell",
+			"windows": {
+				"command": "${workspaceFolder}/CleanProject.cmd"
+			},
+			"linux": {
+				"command": "${workspaceFolder}/CleanProject.sh"
+			},
+			"osx": {
+				"command": "${workspaceFolder}/CleanProject.command"
+			},
+			"group": "build",
+			"presentation": {
+				"echo": true,
+				"reveal": "always",
+				"focus": true,
+				"panel": "dedicated",
+				"showReuseMessage": true,
+				"clear": true
+			},
+			"detail": "Erase all compiled libraries and examples.",
+			"promptOnClose": true,
 			"problemMatcher": []
 		},
 		{
@@ -41,6 +68,8 @@
 				"clear": true,
 				"panel": "dedicated"
 			},
+			"detail": "Compile PicturaSDK with debug symbols",
+			"promptOnClose": true,
 			"problemMatcher": "$msCompile"
 		},
 		{
@@ -61,6 +90,8 @@
 				"clear": true,
 				"panel": "dedicated"
 			},
+			"detail": "Compile PicturaSDK for distribution use (without debug symbols)",
+			"promptOnClose": true,
 			"problemMatcher": "$msCompile"
 		}
 	]

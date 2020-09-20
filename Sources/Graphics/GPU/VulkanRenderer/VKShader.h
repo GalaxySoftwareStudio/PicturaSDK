@@ -1,5 +1,6 @@
 #pragma once
 #include "Graphics/GPU/GPUShader.h"
+#include "ShaderConductor/ShaderConductor.hpp"
 
 namespace Pictura::Graphics::Vulkan
 {
@@ -7,10 +8,9 @@ namespace Pictura::Graphics::Vulkan
     {
     public:
         VKShader(String ShaderPath, String Name);
-        ~VKShader();
+        ~VKShader() {}
 
     public:
-        virtual bool PreprocessShader(Vector<char> RawShaderCode, Vector<char> &PreprocessedShaderCode);
         virtual bool CompileShader(Vector<char> RawShaderCode, Vector<char> &CompiledSpvShaderCode);
     };
 }

@@ -32,7 +32,6 @@ namespace Pictura::Graphics
         virtual ~GPUShader() {}
 
     public:
-        virtual bool PreprocessShader(Vector<char> RawShaderCode, Vector<char> &PreprocessedShaderCode) = 0;
         virtual bool CompileShader(Vector<char> RawShaderCode, Vector<char> &CompiledSpvShaderCode) = 0;
 
     protected:

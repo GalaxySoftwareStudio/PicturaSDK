@@ -70,26 +70,26 @@ workspace "PicturaSDK"
             linkoptions {"/ignore:4006"}
         
         filter "system:linux"
-        system "Linux"
-        platforms {"Linux"}
-        links {"pthread"}
-        buildoptions {"-pthread", "-lpthread"}
+            system "Linux"
+            platforms {"Linux"}
+            links {"pthread"}
+            buildoptions {"-pthread", "-lpthread"}
         
         filter "system:macosx"
-        system "macosx"
-        platforms {"MacOS"}
+            system "macosx"
+            platforms {"MacOS"}
             links {"pthread"}
             buildoptions {"-pthread", "-lpthread"}
 
         filter "configurations:Debug"
             defines "PICTURA_DEBUG"
-            links {"vulkan-1"}
+            links {"vulkan-1", "ShaderConductor", "SPIRV-Tools", "SPIRV-Tools-opt", "spirv-cross-cored"}
             runtime "Debug"
             symbols "on"
 
         filter "configurations:Release"
             defines "PICTURA_RELEASE"
-            links {"vulkan-1"}
+            links {"vulkan-1", "ShaderConductor", "SPIRV-Tools", "SPIRV-Tools-opt", "spirv-cross-core"}
             runtime "Release"
             optimize "on"
 
@@ -117,9 +117,13 @@ workspace "PicturaSDK"
 
         postbuildcommands {
             "{ECHO} Copying application ressources...",
+            "{RMDIR} %{prj.location}../Build/" .. outputDirName .. "/Ressources",
             "{MKDIR} %{prj.location}../Build/" .. outputDirName .. "/Ressources",
             "{MKDIR} %{prj.location}../Build/" .. outputDirName .. "/Ressources/Shaders",
-            "{COPY} %{prj.location}/../Ressources/Shaders/ %{prj.location}/../Builds/" .. outputDirName.. "/Ressources/Shaders/",
+            "{MKDIR} %{prj.location}../Build/" .. outputDirName .. "/Ressources/Icons",
+            "{MKDIR} %{prj.location}../Build/" .. outputDirName .. "/Ressources/Fonts",
+            "{MKDIR} %{prj.location}../Build/" .. outputDirName .. "/Ressources/Languages",
+            "{COPY} %{prj.location}/../Ressources/Shaders/ %{prj.location}/../Build/" .. outputDirName.. "/Ressources/Shaders/",
             "{ECHO} Application ressources copied !"
         }
 
@@ -147,6 +151,3 @@ workspace "PicturaSDK"
             defines "APPLICATION_RELEASE"
             runtime "Release"
             optimize "speed"
-
--- Completion delay
-sleep(1)

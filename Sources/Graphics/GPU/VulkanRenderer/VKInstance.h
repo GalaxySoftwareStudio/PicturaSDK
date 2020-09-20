@@ -1,6 +1,6 @@
 #pragma once
 #include "Graphics/GPU/GPUInstance.h"
-#include "vulkan/vulkan.hpp"
+#include "Vulkan/vulkan.hpp"
 #include "VulkanMemoryAllocator/vma.h"
 
 namespace Pictura::Graphics::Vulkan
