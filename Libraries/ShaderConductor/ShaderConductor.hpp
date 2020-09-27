@@ -153,7 +153,7 @@ namespace ShaderConductor
 
             int optimizationLevel = 3; // 0 to 3, no optimization to most optimization
             ShaderModel shaderModel = {6, 0};
-
+            
             int shiftAllTexturesBindings = 0;
             int shiftAllSamplersBindings = 0;
             int shiftAllCBuffersBindings = 0;

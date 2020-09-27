@@ -4,23 +4,25 @@
 
 namespace Pictura::Graphics
 {
-    enum ShaderTypes
+    enum class ShaderTypes
     {
-        Vertex,
-        Fragment,
-        Tessellation,
-        Geometry,
-        Compute,
-        RayGen,
-        RayHit
+        VertexShader,
+        PixelShader,
+        GeometryShader,
+        HullShader,
+        DomainShader,
+        ComputeShader,
     };
 
+    template<typename T = char>
     struct ShaderSet
     {
-        Vector<char> VertexShader;
-        Vector<char> FragmentShader;
-        Vector<char> TessellationShader;
-        Vector<char> GeometryShader;
+        Vector<T> VertexShader;
+        Vector<T> PixelShader;
+        Vector<T> GeometryShader;
+        Vector<T> HullShader;
+        Vector<T> DomainShader;
+        Vector<T> ComputeShader;
     };
 
     class GPUShader
@@ -32,7 +34,8 @@ namespace Pictura::Graphics
         virtual ~GPUShader() {}
 
     public:
-        virtual bool CompileShader(Vector<char> RawShaderCode, Vector<char> &CompiledSpvShaderCode) = 0;
+        virtual String ShaderSuffixFromStage(ShaderTypes Type) = 0;
+        virtual bool CompileShader(Vector<char> RawShaderCode, Vector<uint32> &CompiledSpvShaderCode, ShaderTypes ShaderStage = ShaderTypes::VertexShader) = 0;
 
     protected:
         virtual Vector<char> ReadShaderFile(String ShaderPath)
@@ -51,7 +54,8 @@ namespace Pictura::Graphics
 
     public:
         String ShaderName;
-        ShaderSet *RawShaders = {0};
-        ShaderSet *CompiledShaders = {0};
+        String ShaderPath;
+        ShaderSet<char> *RawShaders = {0};
+        ShaderSet<uint32> *CompiledShaders = {0};
     };
 }

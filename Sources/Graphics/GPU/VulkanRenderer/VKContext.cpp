@@ -65,9 +65,9 @@ namespace Pictura::Graphics::Vulkan
 
     void VKContext::CreateGraphicsPipeline()
     {
-        VKShader ExampleShader = VKShader("Ressources/Shaders/example", "ExampleShader");
+        VKShader ExampleShader = VKShader("Ressources/Shaders/Example", "ExampleShader");
 
-        vk::ShaderModule vertexShaderModule = CreateShaderModule(ExampleShader.CompiledShaders->FragmentShader);
+        vk::ShaderModule vertexShaderModule = CreateShaderModule(ExampleShader.CompiledShaders->PixelShader);
         vk::ShaderModule fragmentShaderModule = CreateShaderModule(ExampleShader.CompiledShaders->VertexShader);
 
         vk::PipelineShaderStageCreateInfo vertStageCreateInfo({}, vk::ShaderStageFlagBits::eVertex, vertexShaderModule, "main");
@@ -79,11 +79,11 @@ namespace Pictura::Graphics::Vulkan
     }
 
     //TODO: Move this to VKShader
-    vk::ShaderModule VKContext::CreateShaderModule(const Vector<char> &code)
+    vk::ShaderModule VKContext::CreateShaderModule(const Vector<uint32> &code)
     {
         try
         {
-            vk::ShaderModuleCreateInfo moduleCreateInfo({}, code.size(), ReinterpretCastTo<const uint32 *>(code.data()));
+            vk::ShaderModuleCreateInfo moduleCreateInfo(vk::ShaderModuleCreateFlags(), code.size() * sizeof(uint32), code.data());
             vk::ShaderModule shaderModule = DefaultPhysicalDevice->GetLogicalDevice().createShaderModule(moduleCreateInfo);
             return shaderModule;
         }

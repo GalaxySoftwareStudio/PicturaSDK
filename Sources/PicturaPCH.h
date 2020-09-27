@@ -16,6 +16,7 @@
 #include <time.h>
 
 #include <string>
+#include <string_view>
 #include <sstream>
 #include <array>
 #include <vector>

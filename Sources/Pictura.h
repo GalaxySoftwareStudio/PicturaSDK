@@ -26,5 +26,6 @@
 #include "Graphics/GPU/GPUContext.h"
 #include "Graphics/GPU/GPUDevice.h"
 #include "Graphics/GPU/GPUInstance.h"
+#include "Graphics/GPU/GPUShader.h"
 
 using namespace Pictura;

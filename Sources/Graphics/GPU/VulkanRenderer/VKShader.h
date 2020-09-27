@@ -11,6 +11,7 @@ namespace Pictura::Graphics::Vulkan
         ~VKShader() {}
 
     public:
-        virtual bool CompileShader(Vector<char> RawShaderCode, Vector<char> &CompiledSpvShaderCode);
+        virtual String ShaderSuffixFromStage(Graphics::ShaderTypes Type);
+        virtual bool CompileShader(Vector<char> RawShaderCode, Vector<uint32> &CompiledSpvShaderCode, Graphics::ShaderTypes ShaderStage = Graphics::ShaderTypes::VertexShader);
     };
 }

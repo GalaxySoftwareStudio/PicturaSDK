@@ -4,6 +4,7 @@
 #pragma warning(disable : 4311 4302)
 using String = std::string;
 using WideString = std::wstring;
+using StringView = std::string_view;
 
 using NativeHandleType = std::thread::native_handle_type;
 
@@ -36,6 +37,9 @@ using Mutex = std::mutex;
 template<typename T>
 using Atomic = std::atomic<T>;
 
+template <class T, std::size_t N>
+using Array = std::array<T, N>;
+
 DEFINE_NON_DISPATCHABLE_HANDLE(ComplexHandle)
 typedef void *Handle;
 typedef unsigned char uint8;
@@ -56,6 +60,12 @@ template<typename T, class O>
 constexpr T CastTo(O o) noexcept
 {
     return static_cast<T>(o);
+}
+
+template <typename T, class O>
+constexpr T ConstCast(O o) noexcept
+{
+    return const_cast<T>(o);
 }
 
 template<typename T>
