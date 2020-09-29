@@ -115,6 +115,8 @@ namespace Pictura::Graphics::Vulkan
 
             SwapchainImages.resize(actualImageCount);
 
+            CreateImageViews();
+
             Debug::Log::GetFrameworkLog().Success("Vulkan swapchain [@" + Types::ToString(this) + "] created successfully !");
             return true;
         }

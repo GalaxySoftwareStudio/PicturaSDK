@@ -1,4 +1,5 @@
 #include "PicturaPCH.h"
+#include "Core/System/Runtime/Application.h"
 #include "VKContext.h"
 
 namespace Pictura::Graphics::Vulkan
@@ -27,6 +28,7 @@ namespace Pictura::Graphics::Vulkan
 
             DefaultPhysicalDevice = &PhysicalDevices[0];
             VulkanSwapchain = new VKSwapchain(*DefaultPhysicalDevice, GPUSurface);
+            CreateGraphicsPipeline();
 
             if (VerboseContext)
             {
@@ -65,10 +67,10 @@ namespace Pictura::Graphics::Vulkan
 
     void VKContext::CreateGraphicsPipeline()
     {
-        VKShader ExampleShader = VKShader("Ressources/Shaders/Example", "ExampleShader");
+        VKShader ExampleShader = VKShader(DefaultPhysicalDevice, "Ressources\\Shaders\\Example", "ExampleShader");
 
-        vk::ShaderModule vertexShaderModule = CreateShaderModule(ExampleShader.CompiledShaders->PixelShader);
-        vk::ShaderModule fragmentShaderModule = CreateShaderModule(ExampleShader.CompiledShaders->VertexShader);
+        vk::ShaderModule vertexShaderModule = ExampleShader.CreateShaderModule(ExampleShader.CompiledShaders->PixelShader);
+        vk::ShaderModule fragmentShaderModule = ExampleShader.CreateShaderModule(ExampleShader.CompiledShaders->VertexShader);
 
         vk::PipelineShaderStageCreateInfo vertStageCreateInfo({}, vk::ShaderStageFlagBits::eVertex, vertexShaderModule, "main");
         vk::PipelineShaderStageCreateInfo fragStageCreateInfo({}, vk::ShaderStageFlagBits::eFragment, fragmentShaderModule, "main");
@@ -76,21 +78,6 @@ namespace Pictura::Graphics::Vulkan
 
         //TODO: Fixed functions
         //...
-    }
-
-    //TODO: Move this to VKShader
-    vk::ShaderModule VKContext::CreateShaderModule(const Vector<uint32> &code)
-    {
-        try
-        {
-            vk::ShaderModuleCreateInfo moduleCreateInfo(vk::ShaderModuleCreateFlags(), code.size() * sizeof(uint32), code.data());
-            vk::ShaderModule shaderModule = DefaultPhysicalDevice->GetLogicalDevice().createShaderModule(moduleCreateInfo);
-            return shaderModule;
-        }
-        catch (const std::exception &e)
-        {
-            throw GPUException("Failed to create a vulkan shader module !\n" + String(e.what()));
-        }
     }
 
     void VKContext::PrintDebugInformations()

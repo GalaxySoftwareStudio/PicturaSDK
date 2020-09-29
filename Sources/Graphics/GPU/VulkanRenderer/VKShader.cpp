@@ -3,8 +3,9 @@
 
 namespace Pictura::Graphics::Vulkan
 {
-    VKShader::VKShader(String ShaderPath, String Name)
+    VKShader::VKShader(GPUDevice *device, String ShaderPath, String Name)
     {
+        PhysicalDevice = device;
         ShaderName = Name;
 
         RawShaders->VertexShader = ReadShaderFile(ShaderPath + "VS.hlsl");
@@ -32,7 +33,21 @@ namespace Pictura::Graphics::Vulkan
         CompileShader(RawShaders->GeometryShader, CompiledShaders->GeometryShader);
     }
 
-    String ShaderSuffixFromStage(Graphics::ShaderTypes Type)
+    vk::ShaderModule VKShader::CreateShaderModule(const Vector<uint32> &code)
+    {
+        try
+        {
+            vk::ShaderModuleCreateInfo moduleCreateInfo(vk::ShaderModuleCreateFlags(), code.size() * sizeof(uint32), code.data());
+            vk::ShaderModule shaderModule = CastTo<VKDevice *>(PhysicalDevice)->GetLogicalDevice().createShaderModule(moduleCreateInfo);
+            return shaderModule;
+        }
+        catch (const std::exception &e)
+        {
+            throw GPUException("Failed to create a vulkan shader module !\n" + String(e.what()));
+        }
+    }
+
+    String VKShader::ShaderSuffixFromStage(Graphics::ShaderTypes Type)
     {
         switch (Type)
         {
@@ -63,8 +78,6 @@ namespace Pictura::Graphics::Vulkan
 
     bool VKShader::CompileShader(Vector<char> RawShaderCode, Vector<uint32> &CompiledSpvShaderCode, Graphics::ShaderTypes ShaderStage)
     {
-        bool compilationSuccess = false;
-
         if (RawShaderCode.empty())
         {
             return false;
@@ -74,7 +87,7 @@ namespace Pictura::Graphics::Vulkan
         ShaderConductor::Compiler::SourceDesc ShaderSourceDescription{ReinterpretCastTo<char *>(RawShaderCode.data()),
                                                                       ShaderFileName,
                                                                       "main", Stage, nullptr, 0, [](const char *IncludeName) -> ShaderConductor::Blob * {
-                                                                          //Handle include files by using Pictura Filesystem
+                                                                          //TODO : Handle include files in shader using Pictura Filesystem
                                                                           //Loop though shader include directories and create a blob of include files
 
                                                                           ShaderConductor::Blob *IncludesBlob = ShaderConductor::CreateBlob(nullptr, 0);
@@ -94,18 +107,17 @@ namespace Pictura::Graphics::Vulkan
 
         if (CompilationResult.hasError)
         {
-            StringView CompilationErrorMessage(ReinterpretCastTo<const char*>(CompilationResult.errorWarningMsg->Data()), CompilationResult.errorWarningMsg->Size());
+            StringView CompilationErrorMessage(ReinterpretCastTo<const char *>(CompilationResult.errorWarningMsg->Data()), CompilationResult.errorWarningMsg->Size());
 
             Debug::Log::GetFrameworkLog().Error("Failed to compile shader " + String(ShaderFileName) + " : " + String(CompilationErrorMessage));
             return false;
         }
 
-        uint32* SpirV = ReinterpretCastTo<uint32*>(ConstCast<void*>(CompilationResult.target->Data()));
+        uint32 *SpirV = ReinterpretCastTo<uint32 *>(ConstCast<void *>(CompilationResult.target->Data()));
         CompiledSpvShaderCode = Vector<uint32>(SpirV, SpirV + (CompilationResult.target->Size() / sizeof(uint32)));
-        
-        //FIXME: Fix linking errors on VKShader::ShaderSuffixFromStage
+
         Debug::Log::GetFrameworkLog().Success(ShaderName + " compiled successfully !");
 
-        return compilationSuccess;
+        return true;
     }
 }

@@ -143,11 +143,13 @@ workspace "PicturaSDK"
 
         filter "configurations:Debug"
             defines "APPLICATION_DEBUG"
+            debugdir "%{cfg.linktarget.directory}"
             runtime "Debug"
             symbols "on"
             optimize "off"
-
+            
         filter "configurations:Release"
             defines "APPLICATION_RELEASE"
+            debugdir "%{cfg.linktarget.directory}"
             runtime "Release"
             optimize "speed"

@@ -36,7 +36,25 @@ namespace Pictura::Runtime
 		bool ShouldQuit() { return m_isQuitting; }
 		Debug::Log& GetApplicationLog() { return *m_ApplicationLog; }
 
-	private:
+	public:
+		static String GetFrameworkConfiguration()
+		{
+#ifdef PICTURA_DEBUG
+			return "DEBUG";
+#else
+			return "RELEASE";
+#endif
+		}
+
+		static String GetFrameworkVersion()
+		{
+			return "0.1";
+		}
+
+		static String GetWorkingDirectory()
+		{
+			return std::filesystem::current_path().string();
+		}
 
 	public:
 		event(StartupEventArgs, ApplicationStart);

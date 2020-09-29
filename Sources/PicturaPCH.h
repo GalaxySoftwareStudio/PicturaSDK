@@ -26,9 +26,12 @@
 #include <unordered_set>
 
 #include <thread>
+//#include <jthread>
 #include <atomic>
 #include <mutex>
 #include <shared_mutex>
+
+#include <filesystem>
 
 #include "Core/PlatformMacro.h"
 

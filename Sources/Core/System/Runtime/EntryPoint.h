@@ -45,7 +45,6 @@ int main(int argc, char** argv)
 	SetupEnvironment();
 	const Vector<String> args(argv, argv + argc); //Store runtime arguments in a Vector<String>
 	auto app = Pictura::Runtime::InitApplication(); //Create new application instance
-
 	app->Arguments = args; //Move args to Application Arguments
 	Pictura::Runtime::StartupEventArgs e = Pictura::Runtime::StartupEventArgs(app->Arguments); //Prepare new StartupEventArgs using Application Arguments
 

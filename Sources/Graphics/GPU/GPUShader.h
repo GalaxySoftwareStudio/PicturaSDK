@@ -1,4 +1,5 @@
 #pragma once
+#include "GPUDevice.h"
 #include "Core/CoreFramework.h"
 #include "Core/Exceptions/Exceptions.h"
 
@@ -30,7 +31,7 @@ namespace Pictura::Graphics
     public:
         GPUShader() {}
 
-        GPUShader(String ShaderPath, String Name) {}
+        GPUShader(GPUDevice *device, String ShaderPath, String Name) {}
         virtual ~GPUShader() {}
 
     public:
@@ -42,6 +43,10 @@ namespace Pictura::Graphics
         {
             std::ifstream file(ShaderPath, std::ios::ate | std::ios::binary);
 
+            if (!file.is_open()) {
+                throw GPUException("Failed to open shader at \"" + ShaderPath + "\" from disk !");
+            }
+
             size_t fileSize = (size_t)file.tellg();
             Vector<char> buffer(fileSize);
 
@@ -51,6 +56,9 @@ namespace Pictura::Graphics
             file.close();
             return buffer;
         }
+
+    protected:
+        GPUDevice *PhysicalDevice = nullptr;
 
     public:
         String ShaderName;

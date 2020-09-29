@@ -22,9 +22,6 @@ namespace Pictura::Graphics::Vulkan
 
         virtual void PrintDebugInformations();
 
-    private:
-        vk::ShaderModule CreateShaderModule(const Vector<uint32> &code);
-
     public:
         VKInstance *VulkanInstance = nullptr;
         VKSwapchain *VulkanSwapchain = nullptr;

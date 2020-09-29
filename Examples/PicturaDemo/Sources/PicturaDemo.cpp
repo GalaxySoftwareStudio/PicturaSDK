@@ -21,6 +21,7 @@ public:
 
     void DemoApplication_ApplicationStart(StartupEventArgs &e)
     {
+        GetApplicationLog().Info("Application path = " + e.Arguments[0]);
         GetApplicationLog().Info("ApplicationThreadID = " + Threading::Thread::CurrentThread()->ThreadName);
         GetApplicationLog().Info("Application is running !");
 

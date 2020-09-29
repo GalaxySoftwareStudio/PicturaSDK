@@ -93,8 +93,8 @@ namespace Pictura::Graphics::Vulkan
         String &GetName() { return m_DeviceName; }
 
     private:
+        virtual void CreateLogicalDevices();
         void FindQueueFamilies();
-        void CreateLogicalDevices();
         void CreateSemaphores();
 
     private:
