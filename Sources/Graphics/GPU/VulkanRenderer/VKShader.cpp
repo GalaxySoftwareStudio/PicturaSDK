@@ -90,7 +90,7 @@ namespace Pictura::Graphics::Vulkan
                                                                           //TODO : Handle include files in shader using Pictura Filesystem
                                                                           //Loop though shader include directories and create a blob of include files
 
-                                                                          ShaderConductor::Blob *IncludesBlob = ShaderConductor::CreateBlob(nullptr, 0);
+                                                                          ShaderConductor::Blob *IncludesBlob = new ShaderConductor::Blob(nullptr, 0);
 
                                                                           return IncludesBlob;
                                                                       }};
@@ -107,14 +107,14 @@ namespace Pictura::Graphics::Vulkan
 
         if (CompilationResult.hasError)
         {
-            StringView CompilationErrorMessage(ReinterpretCastTo<const char *>(CompilationResult.errorWarningMsg->Data()), CompilationResult.errorWarningMsg->Size());
+            StringView CompilationErrorMessage(ReinterpretCastTo<const char *>(CompilationResult.errorWarningMsg.Data()), CompilationResult.errorWarningMsg.Size());
 
             Debug::Log::GetFrameworkLog().Error("Failed to compile shader " + String(ShaderFileName) + " : " + String(CompilationErrorMessage));
             return false;
         }
 
-        uint32 *SpirV = ReinterpretCastTo<uint32 *>(ConstCast<void *>(CompilationResult.target->Data()));
-        CompiledSpvShaderCode = Vector<uint32>(SpirV, SpirV + (CompilationResult.target->Size() / sizeof(uint32)));
+        uint32 *SpirV = ReinterpretCastTo<uint32 *>(ConstCast<void *>(CompilationResult.target.Data()));
+        CompiledSpvShaderCode = Vector<uint32>(SpirV, SpirV + (CompilationResult.target.Size() / sizeof(uint32)));
 
         Debug::Log::GetFrameworkLog().Success(ShaderName + " compiled successfully !");
 
